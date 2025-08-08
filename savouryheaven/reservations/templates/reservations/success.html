@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Confirmed{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title text-success">✓</h1>
+            <h2 class="card-title">Reservation Confirmed!</h2>
+            <p class="card-text">Thank you for choosing Savoury Heaven</p>
+            
+            <div class="booking-details mt-4">
+                <h5>Your Reservation Details:</h5>
+                <p><strong>Name:</strong> {{ reservation.name }}</p>
+                <p><strong>Date:</strong> {{ reservation.date }}</p>
+                <p><strong>Time:</strong> {{ reservation.time_slot.display_name }}</p>
+                <p><strong>Guests:</strong> {{ reservation.guests }}</p>
+                {% if reservation.special_requests %}
+                <p><strong>Special Requests:</strong> {{ reservation.special_requests }}</p>
+                {% endif %}
+            </div>
+
+            <a href="/" class="btn btn-primary mt-3">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

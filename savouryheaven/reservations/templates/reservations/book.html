@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Book a Table{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="mb-4">Book Your Table</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.time_slot.label_tag }}
+            {{ form.time_slot }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.guests.label_tag }}
+            {{ form.guests }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.special_requests.label_tag }}
+            {{ form.special_requests }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Reservation</button>
+    </form>
+</div>
+{% endblock %}
