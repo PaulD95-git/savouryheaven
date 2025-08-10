@@ -18,7 +18,7 @@ class TimeSlot(models.Model):
         help_text="Toggle to disable slot temporarily"
     )
     max_capacity = models.PositiveIntegerField(
-        default=10,
+        default=50,
         validators=[MinValueValidator(1)],
         help_text="Maximum reservations allowed for this slot"
     )
@@ -84,7 +84,6 @@ class Reservation(models.Model):
     class Meta:
         """Metadata options."""
         ordering = ['date', 'time_slot__start_time']  # Earliest first
-        unique_together = ['date', 'time_slot', 'user']  # Prevent duplicates
         verbose_name = "Reservation"
         verbose_name_plural = "Reservations"
 

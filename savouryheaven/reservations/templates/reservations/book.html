@@ -1,52 +1,137 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Book a Table{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2 class="mb-4">Book Your Table</h2>
-    <form method="post">
-        {% csrf_token %}
+<!-- CSS and JS imports -->
+<link rel="stylesheet" href="{% static 'css/reservations/book.css' %}">
+<script src="{% static 'js/reservations/book.js' %}"></script>
+
+<!-- ============================================= -->
+<!-- HERO SECTION -->
+<!-- ============================================= -->
+<section class="booking-hero">
+    <div class="booking-hero-content">
+        <h1 class="display-4 fw-bold mb-3">Reserve Your Table</h1>
+        <p class="lead">Experience culinary excellence at Savory Heaven</p>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- MAIN BOOKING FORM -->
+<!-- ============================================= -->
+<div class="booking-container">
+    <div class="booking-card fade-in">
+        <h2 class="section-title">Make a Reservation</h2>
         
-        <div class="mb-3">
-            {{ form.name.label_tag }}
-            {{ form.name }}
-            {% if form.name.errors %}
-                <div class="text-danger">{{ form.name.errors }}</div>
+        <form id="reservationForm" method="post" novalidate>
+            {% csrf_token %}
+            
+            <!-- Personal info fields -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="id_name" class="form-label">Full Name *</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <div class="field-error">{{ form.name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">Email Address *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="field-error">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact field -->
+            <div class="form-group">
+                <label for="id_phone" class="form-label">Phone Number *</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <div class="field-error">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- ============================================= -->
+            <!-- DATE/TIME SELECTION -->
+            <!-- ============================================= -->
+            <div class="form-group">
+                <label for="id_date" class="form-label">Reservation Date *</label>
+                <div class="date-picker-container">
+                    {{ form.date }}
+                    {% if form.date.errors %}
+                    <div class="field-error">{{ form.date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Time slot picker -->
+            <div class="form-group">
+                <label class="form-label">Select Time *</label>
+                <div id="timeSlotsContainer" class="time-slots-container">
+                    <div class="time-slot">Please select a date first</div>
+                </div>
+                <input type="hidden" id="id_time_slot" name="time_slot">
+                {% if form.time_slot.errors %}
+                <div class="field-error">{{ form.time_slot.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Party size selector -->
+            <div class="form-group">
+                <label class="form-label">Number of Guests *</label>
+                <div class="guests-selector">
+                    <button type="button" class="guests-btn" id="decreaseGuests">−</button>
+                    <span class="guests-count" id="guestCount">2</span>
+                    <button type="button" class="guests-btn" id="increaseGuests">+</button>
+                </div>
+                <input type="hidden" id="id_guests" name="guests" value="2">
+                {% if form.guests.errors %}
+                <div class="field-error">{{ form.guests.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Special requests textarea -->
+            <div class="form-group">
+                <label for="id_special_requests" class="form-label">Special Requests</label>
+                {{ form.special_requests }}
+            </div>
+
+            <!-- System messages -->
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
             {% endif %}
-        </div>
 
-        <div class="mb-3">
-            {{ form.email.label_tag }}
-            {{ form.email }}
-        </div>
+            <!-- ============================================= -->
+            <!-- FORM SUBMISSION -->
+            <!-- ============================================= -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span id="submitText">Reserve Table</span>
+                <span id="loadingText" style="display: none;">Processing...</span>
+            </button>
 
-        <div class="mb-3">
-            {{ form.phone.label_tag }}
-            {{ form.phone }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.date.label_tag }}
-            {{ form.date }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.time_slot.label_tag }}
-            {{ form.time_slot }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.guests.label_tag }}
-            {{ form.guests }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.special_requests.label_tag }}
-            {{ form.special_requests }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit Reservation</button>
-    </form>
+            <!-- Form-wide errors -->
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -1,30 +1,94 @@
+"""
+Django views for handling restaurant reservations.
+
+This module contains views for:
+- Creating new reservations
+- Displaying reservation success page
+- API endpoint for checking available time slots
+"""
+
 from django.shortcuts import render, redirect
+from datetime import datetime
 from django.contrib import messages
 from .forms import ReservationForm
+from .models import TimeSlot, Reservation
+from django.http import JsonResponse
 
 
 def reservation_view(request):
     """
-    Handles the reservation form display and submission.
+    Handle reservation booking form submission and display.
 
-    GET: Shows empty booking form with available time slots
-    POST: Processes form data, saves reservation, and redirects to success page
+    GET: Display empty reservation form
+    POST: Process form submission and create reservation
+
+    Args:
+        request: HTTP request object
+
+    Returns:
+        HttpResponse: Rendered booking form or redirect to success page
     """
     if request.method == 'POST':
         form = ReservationForm(request.POST)
+
         if form.is_valid():
             try:
+                # Create reservation instance without saving to database yet
                 reservation = form.save(commit=False)
+
+                # Associate user with reservation if authenticated
                 if request.user.is_authenticated:
                     reservation.user = request.user
+                else:
+                    reservation.user = None  # Allow anonymous bookings
+
+                # Calculate total guests already booked for this time slot
+                existing_bookings = Reservation.objects.filter(
+                    date=reservation.date,
+                    time_slot=reservation.time_slot,
+                    is_cancelled=False
+                )
+                total_booked_guests = sum(
+                    booking.guests for booking in existing_bookings
+                )
+
+                # Check if new booking would exceed time slot capacity
+                max_capacity = reservation.time_slot.max_capacity
+                if total_booked_guests + reservation.guests > max_capacity:
+                    # Calculate remaining spots and show error message
+                    remaining = max_capacity - total_booked_guests
+                    error_msg = (
+                        f'Only {remaining} guest spots left in this time slot.'
+                        'Please choose another time or reduce your party size.'
+                    )
+                    messages.error(request, error_msg)
+
+                    return render(request, 'reservations/book.html', {
+                        'form': form,
+                        'page_title': 'Book a Table'
+                    })
+
+                # Save reservation to database
                 reservation.save()
+
+                # Store reservation ID in session for anonymous users
+                if not request.user.is_authenticated:
+                    request.session['last_reservation_id'] = reservation.id
+
                 messages.success(request, 'Reservation confirmed!')
                 return redirect('booking_success')
+
             except Exception as e:
-                messages.error(request, f'Error saving reservation: {str(e)}')
+                # Handle any database or other errors during reservation
+                error_msg = f'Error saving reservation: {str(e)}'
+                messages.error(request, error_msg)
         else:
-            messages.error(request, 'Please correct the errors below.')
+            # Display form validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
+        # GET request - display empty form
         form = ReservationForm()
 
     return render(request, 'reservations/book.html', {
@@ -34,5 +98,112 @@ def reservation_view(request):
 
 
 def success_view(request):
-    """Display reservation success confirmation page."""
-    return render(request, 'reservations/success.html')
+    """
+    Display reservation success confirmation page.
+
+    Shows the user's most recent reservation details.
+    For authenticated users, gets latest reservation from database.
+    For anonymous users, gets reservation from session data.
+
+    Args:
+        request: HTTP request object
+
+    Returns:
+        HttpResponse: Rendered success page or redirect to home
+    """
+    reservation = None
+
+    if request.user.is_authenticated:
+        # For logged-in users, get their latest reservation
+        reservation = (
+            Reservation.objects
+            .filter(user=request.user)
+            .order_by('-created_at')
+            .first()
+        )
+    else:
+        # For anonymous users, try to get reservation from session
+        reservation_id = request.session.get('last_reservation_id')
+        if reservation_id:
+            try:
+                reservation = Reservation.objects.get(id=reservation_id)
+            except Reservation.DoesNotExist:
+                reservation = None
+
+    # If no reservation found, redirect with warning message
+    if not reservation:
+        messages.warning(request, "No reservation found to display")
+        return redirect('home')  # Redirect to home or appropriate page
+
+    # Clear session data after displaying success page
+    if 'last_reservation_id' in request.session:
+        del request.session['last_reservation_id']
+
+    return render(request, 'reservations/success.html', {
+        'reservation': reservation
+    })
+
+
+def get_available_slots(request):
+    """
+    API endpoint to get available time slots for a specific date.
+
+    Returns JSON data about time slot availability including:
+    - Slot ID and display name
+    - Whether slot is available
+    - Number of remaining spots
+
+    Args:
+        request: HTTP request object with 'date' parameter
+
+    Returns:
+        JsonResponse: Available slots data or error message
+    """
+    date_str = request.GET.get('date')
+
+    # Validate and parse the date parameter
+    try:
+        selected_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    except (ValueError, TypeError):
+        return JsonResponse(
+            {'error': 'Invalid date format. Expected YYYY-MM-DD'},
+            status=400
+        )
+
+    # Get all active time slots ordered by start time
+    time_slots = TimeSlot.objects.filter(
+        is_active=True
+    ).order_by('start_time')
+
+    available_slots = []
+
+    for slot in time_slots:
+        # Calculate total guests already booked for this time slot
+        existing_bookings = Reservation.objects.filter(
+            date=selected_date,
+            time_slot=slot,
+            is_cancelled=False
+        )
+
+        # Sum up all guests from existing bookings
+        total_booked_guests = sum(
+            booking.guests for booking in existing_bookings
+        )
+
+        # Calculate remaining capacity
+        remaining_capacity = slot.max_capacity - total_booked_guests
+
+        # Ensure remaining capacity doesn't go below 0
+        remaining_capacity = max(0, remaining_capacity)
+
+        # Build slot data for JSON response
+        slot_data = {
+            'id': slot.id,
+            'display_name': slot.display_name,
+            'available': remaining_capacity > 0,
+            'remaining_slots': remaining_capacity
+        }
+
+        available_slots.append(slot_data)
+
+    return JsonResponse({'available_slots': available_slots})
