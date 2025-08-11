@@ -15,6 +15,10 @@ from .models import TimeSlot, Reservation
 from django.http import JsonResponse
 
 
+def index(request):
+    return render(request, 'index.html')
+
+
 def reservation_view(request):
     """
     Handle reservation booking form submission and display.

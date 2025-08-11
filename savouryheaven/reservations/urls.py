@@ -1,9 +1,12 @@
 # reservations/urls.py
 from django.urls import path
-from .views import reservation_view, success_view, get_available_slots
+from .views import reservation_view, success_view, get_available_slots, index
 
 # URL patterns for the reservations app
 urlpatterns = [
+    # Home page for reservations
+    path('', index, name='home'),
+
     # Booking form page
     path('book/', reservation_view, name='book'),
 
