@@ -40,13 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',  # Required for allauth
 
+    # Custom apps
+    'reservations',
+
     # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
-    # Custom apps
-    'reservations',
 ]
 
 # -------------------------------------------------------------------

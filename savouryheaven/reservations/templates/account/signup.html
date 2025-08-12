@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<!-- CSS imports -->
+<link rel="stylesheet" href="{% static 'css/account/authforms.css' %}">
+
+<!-- ============================================= -->
+<!-- AUTH HERO SECTION -->
+<!-- ============================================= -->
+<section class="auth-hero">
+    <div class="auth-hero-content">
+        <h1 class="display-5 fw-bold mb-3">Join Savory Heaven</h1>
+        <p class="lead">Create your account and start your culinary journey</p>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- SIGNUP FORM CONTAINER -->
+<!-- ============================================= -->
+<div class="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-card-header">
+            <h2 class="auth-title">{% trans "Create Account" %}</h2>
+            <p class="auth-subtitle">Join our community of food enthusiasts</p>
+        </div>
+        
+        <form method="post" action="{% url 'account_signup' %}" class="auth-form" novalidate>
+            {% csrf_token %}
+            
+            <!-- Form-wide errors -->
+            {% if form.non_field_errors %}
+                <div class="auth-error-message">
+                    {% for error in form.non_field_errors %}
+                        <div class="error-item">
+                            <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <!-- Username field -->
+            {% if form.username %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}" class="form-label">
+                    {% trans "Username" %} *
+                </label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <div class="field-error">
+                    {% for error in form.username.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="field-help">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Choose a unique username (letters, numbers, and @/./+/-/_ only)
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Email field -->
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    {% trans "Email Address" %} *
+                </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="field-error">
+                    {% for error in form.email.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- First Name field (if exists) -->
+            {% if form.first_name %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                            {% trans "First Name" %}
+                        </label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                        <div class="field-error">
+                            {% for error in form.first_name.errors %}
+                                <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                            {% trans "Last Name" %}
+                        </label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                        <div class="field-error">
+                            {% for error in form.last_name.errors %}
+                                <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Password field -->
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">
+                    {% trans "Password" %} *
+                </label>
+                <div class="password-input-container">
+                    {{ form.password1 }}
+                    <button type="button" class="password-toggle" id="togglePassword1">
+                        <i class="bi bi-eye" id="toggleIcon1"></i>
+                    </button>
+                </div>
+                {% if form.password1.errors %}
+                <div class="field-error">
+                    {% for error in form.password1.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strengthFill"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Enter a password</div>
+                </div>
+            </div>
+            
+            <!-- Password confirmation field -->
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">
+                    {% trans "Confirm Password" %} *
+                </label>
+                <div class="password-input-container">
+                    {{ form.password2 }}
+                    <button type="button" class="password-toggle" id="togglePassword2">
+                        <i class="bi bi-eye" id="toggleIcon2"></i>
+                    </button>
+                </div>
+                {% if form.password2.errors %}
+                <div class="field-error">
+                    {% for error in form.password2.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="password-match" id="passwordMatch" style="display: none;">
+                    <i class="bi bi-check-circle text-success me-1"></i>
+                    Passwords match
+                </div>
+            </div>
+            
+            <!-- Terms and conditions -->
+            <div class="form-group">
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="agreeTerms" class="custom-checkbox-input" required>
+                    <label for="agreeTerms" class="checkbox-label">
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a> *
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Submit button -->
+            <button type="submit" class="auth-submit-btn" id="signupBtn" disabled>
+                <span class="btn-text">{% trans "Create Account" %}</span>
+                <span class="btn-loading" style="display: none;">
+                    <i class="bi bi-arrow-clockwise spin"></i>
+                    Creating account...
+                </span>
+            </button>
+        </form>
+        
+        <!-- Divider -->
+        <div class="auth-divider">
+            <span>or</span>
+        </div>
+        
+        <!-- Links -->
+        <div class="auth-links">
+            <p class="auth-link-item">
+                <span class="link-text">Already have an account?</span>
+                <a href="{% url 'account_login' %}" class="auth-link">
+                    {% trans "Sign In" %}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for form interactions -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggles
+    function setupPasswordToggle(toggleId, inputName, iconId) {
+        const toggle = document.getElementById(toggleId);
+        const input = document.querySelector(`input[name="${inputName}"]`);
+        const icon = document.getElementById(iconId);
+        
+        if (toggle && input && icon) {
+            toggle.addEventListener('click', function() {
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                icon.className = type === 'text' ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
+        }
+    }
+    
+    setupPasswordToggle('togglePassword1', 'password1', 'toggleIcon1');
+    setupPasswordToggle('togglePassword2', 'password2', 'toggleIcon2');
+    
+    // Password strength indicator
+    const password1 = document.querySelector('input[name="password1"]');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthText = document.getElementById('strengthText');
+    
+    if (password1 && strengthFill && strengthText) {
+        password1.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            strengthFill.style.width = strength.percentage + '%';
+            strengthFill.className = 'strength-fill ' + strength.class;
+            strengthText.textContent = strength.text;
+        });
+    }
+    
+    // Password match indicator
+    const password2 = document.querySelector('input[name="password2"]');
+    const passwordMatch = document.getElementById('passwordMatch');
+    
+    if (password1 && password2 && passwordMatch) {
+        password2.addEventListener('input', function() {
+            if (this.value && password1.value === this.value) {
+                passwordMatch.style.display = 'block';
+            } else {
+                passwordMatch.style.display = 'none';
+            }
+        });
+    }
+    
+    // Terms checkbox validation
+    const agreeTerms = document.getElementById('agreeTerms');
+    const submitBtn = document.getElementById('signupBtn');
+    
+    if (agreeTerms && submitBtn) {
+        agreeTerms.addEventListener('change', function() {
+            submitBtn.disabled = !this.checked;
+        });
+    }
+    
+    // Form submission loading state
+    const form = document.querySelector('.auth-form');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-flex';
+        });
+    }
+    
+    // Add form control classes and placeholders
+    const formControls = document.querySelectorAll('input:not([type="checkbox"])');
+    formControls.forEach(function(input) {
+        input.classList.add('form-control');
+        
+        // Add placeholder text
+        const placeholders = {
+            'username': 'Choose a unique username',
+            'email': 'Enter your email address',
+            'first_name': 'Enter your first name',
+            'last_name': 'Enter your last name',
+            'password1': 'Create a secure password',
+            'password2': 'Confirm your password'
+        };
+        
+        if (placeholders[input.name]) {
+            input.placeholder = placeholders[input.name];
+        }
+    });
+});
+
+// Password strength calculation
+function calculatePasswordStrength(password) {
+    if (!password) {
+        return { percentage: 0, class: '', text: 'Enter a password' };
+    }
+    
+    let score = 0;
+    const checks = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password),
+        special: /[^A-Za-z0-9]/.test(password)
+    };
+    
+    score = Object.values(checks).filter(Boolean).length;
+    
+    if (score < 3) {
+        return { percentage: 25, class: 'weak', text: 'Weak password' };
+    } else if (score < 4) {
+        return { percentage: 50, class: 'fair', text: 'Fair password' };
+    } else if (score < 5) {
+        return { percentage: 75, class: 'good', text: 'Good password' };
+    } else {
+        return { percentage: 100, class: 'strong', text: 'Strong password' };
+    }
+}
+</script>
+{% endblock %}

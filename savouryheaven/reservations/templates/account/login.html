@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<!-- CSS imports -->
+<link rel="stylesheet" href="{% static 'css/account/authforms.css' %}">
+
+<!-- ============================================= -->
+<!-- AUTH HERO SECTION -->
+<!-- ============================================= -->
+<section class="auth-hero">
+    <div class="auth-hero-content">
+        <h1 class="display-5 fw-bold mb-3">Welcome Back</h1>
+        <p class="lead">Sign in to your Savory Heaven account</p>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- LOGIN FORM CONTAINER -->
+<!-- ============================================= -->
+<div class="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-card-header">
+            <h2 class="auth-title">{% trans "Sign In" %}</h2>
+            <p class="auth-subtitle">Enter your credentials to access your account</p>
+        </div>
+        
+        <form method="post" action="{% url 'account_login' %}" class="auth-form" novalidate>
+            {% csrf_token %}
+            
+            <!-- Form-wide errors -->
+            {% if form.non_field_errors %}
+                <div class="auth-error-message">
+                    {% for error in form.non_field_errors %}
+                        <div class="error-item">
+                            <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <!-- Login field (email/username) -->
+            <div class="form-group">
+                <label for="{{ form.login.id_for_label }}" class="form-label">
+                    {% trans "Email or Username" %} *
+                </label>
+                {{ form.login }}
+                {% if form.login.errors %}
+                <div class="field-error">
+                    {% for error in form.login.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Password field -->
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}" class="form-label">
+                    {% trans "Password" %} *
+                </label>
+                <div class="password-input-container">
+                    {{ form.password }}
+                    <button type="button" class="password-toggle" id="togglePassword">
+                        <i class="bi bi-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+                {% if form.password.errors %}
+                <div class="field-error">
+                    {% for error in form.password.errors %}
+                        <i class="bi bi-exclamation-triangle me-1"></i>{{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Remember me checkbox -->
+            <div class="form-group">
+                <div class="custom-checkbox">
+                    {{ form.remember }}
+                    <label for="{{ form.remember.id_for_label }}" class="checkbox-label">
+                        <span class="checkmark"></span>
+                        {% trans "Remember me for 30 days" %}
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Submit button -->
+            <button type="submit" class="auth-submit-btn" id="loginBtn">
+                <span class="btn-text">{% trans "Sign In" %}</span>
+                <span class="btn-loading" style="display: none;">
+                    <i class="bi bi-arrow-clockwise spin"></i>
+                    Signing in...
+                </span>
+            </button>
+        </form>
+        
+        <!-- Divider -->
+        <div class="auth-divider">
+            <span>or</span>
+        </div>
+        
+        <!-- Links -->
+        <div class="auth-links">
+            <p class="auth-link-item">
+                <span class="link-text">Don't have an account?</span>
+                <a href="{% url 'account_signup' %}" class="auth-link">
+                    {% trans "Create Account" %}
+                </a>
+            </p>
+            <p class="auth-link-item">
+                <a href="{% url 'account_reset_password' %}" class="auth-link forgot-link">
+                    <i class="bi bi-key me-2"></i>
+                    {% trans "Forgot your password?" %}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for form interactions -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.querySelector('input[name="password"]');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            if (type === 'text') {
+                toggleIcon.className = 'bi bi-eye-slash';
+            } else {
+                toggleIcon.className = 'bi bi-eye';
+            }
+        });
+    }
+    
+    // Form submission loading state
+    const form = document.querySelector('.auth-form');
+    const submitBtn = document.getElementById('loginBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-flex';
+        });
+    }
+    
+    // Add form control classes to Django form fields
+    const formControls = document.querySelectorAll('input:not([type="checkbox"])');
+    formControls.forEach(function(input) {
+        input.classList.add('form-control');
+        
+        // Add placeholder text
+        if (input.name === 'login') {
+            input.placeholder = 'Enter your email or username';
+        } else if (input.name === 'password') {
+            input.placeholder = 'Enter your password';
+        }
+    });
+    
+    // Checkbox styling
+    const checkbox = document.querySelector('input[name="remember"]');
+    if (checkbox) {
+        checkbox.classList.add('custom-checkbox-input');
+    }
+});
+</script>
+{% endblock %}
