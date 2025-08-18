@@ -1,12 +1,3 @@
-"""
-Django views for handling restaurant reservations.
-
-This module contains views for:
-- Creating new reservations
-- Displaying reservation success page
-- API endpoint for checking available time slots
-"""
-
 from django.shortcuts import render, redirect
 from datetime import datetime
 from django.contrib import messages
