@@ -1,18 +1,30 @@
-# reservations/urls.py
 from django.urls import path
-from .views import reservation_view, success_view, get_available_slots, index
+from .views import (
+    reservation_view,
+    success_view,
+    get_available_slots,
+    index,
+    my_reservations,
+    edit_reservation,
+    cancel_reservation,
+    edit_profile,
+)
 
-# URL patterns for the reservations app
 urlpatterns = [
-    # Home page for reservations
     path('', index, name='home'),
-
-    # Booking form page
     path('book/', reservation_view, name='book'),
-
-    # Success page after booking submission
     path('book/success/', success_view, name='booking_success'),
-
-    # API endpoint for fetching available time slots (AJAX)
     path('api/available-slots/', get_available_slots, name='available_slots'),
+    path('my-reservations/', my_reservations, name='my_reservations'),
+    path('edit-profile/', edit_profile, name='edit_profile'),
+    path(
+        'edit-reservation/<int:reservation_id>/',
+        edit_reservation,
+        name='edit_reservation'
+    ),
+    path(
+        'cancel-reservation/<int:reservation_id>/',
+        cancel_reservation,
+        name='cancel_reservation'
+    ),
 ]

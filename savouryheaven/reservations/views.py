@@ -1,15 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from datetime import datetime
 from django.contrib import messages
-from .forms import ReservationForm
+from .forms import ReservationForm, UserProfileForm
 from .models import TimeSlot, Reservation
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 
 def index(request):
     return render(request, 'index.html')
 
 
+@login_required
 def reservation_view(request):
     """
     Handle reservation booking form submission and display.
@@ -92,6 +98,7 @@ def reservation_view(request):
     })
 
 
+@login_required
 def success_view(request):
     """
     Display reservation success confirmation page.
@@ -139,6 +146,7 @@ def success_view(request):
     })
 
 
+@login_required
 def get_available_slots(request):
     """
     API endpoint to get available time slots for a specific date.
@@ -202,3 +210,148 @@ def get_available_slots(request):
         available_slots.append(slot_data)
 
     return JsonResponse({'available_slots': available_slots})
+
+
+@login_required
+def my_reservations(request):
+    reservations = Reservation.objects.filter(
+        user=request.user
+    ).order_by('-date', 'time_slot__start_time')
+
+    return render(request, 'reservations/my_reservations.html', {
+        'reservations': reservations
+    })
+
+
+@login_required
+def edit_reservation(request, reservation_id):
+    """
+    Handle reservation editing form submission and display.
+
+    GET: Display pre-filled reservation form
+    POST: Process form submission and update reservation
+
+    Args:
+        request: HTTP request object
+        reservation_id: ID of the reservation to edit
+
+    Returns:
+        HttpResponse: Rendered edit form or redirect to success page
+    """
+    try:
+        reservation = Reservation.objects.get(id=reservation_id, user=request.user)
+    except Reservation.DoesNotExist:
+        messages.error(request, "Reservation not found or you don't have permission to edit it.")
+        return redirect('my_reservations')
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+
+        if form.is_valid():
+            try:
+                # Create reservation instance without saving to database yet
+                updated_reservation = form.save(commit=False)
+
+                # Check if time slot or date has changed
+                if (updated_reservation.date != reservation.date or
+                        updated_reservation.time_slot != reservation.time_slot):
+
+                    # Calculate total guests already booked for this time slot
+                    existing_bookings = Reservation.objects.filter(
+                        date=updated_reservation.date,
+                        time_slot=updated_reservation.time_slot,
+                        is_cancelled=False
+                    ).exclude(id=reservation.id)  # Exclude current reservation
+
+                    total_booked_guests = sum(
+                        booking.guests for booking in existing_bookings
+                    )
+
+                    # Check if new booking would exceed time slot capacity
+                    max_capacity = updated_reservation.time_slot.max_capacity
+                    if total_booked_guests + updated_reservation.guests > max_capacity:
+                        # Calculate remaining spots and show error message
+                        remaining = max_capacity - total_booked_guests
+                        error_msg = (
+                            f'Only {remaining} guest spots left in this time slot. '
+                            'Please choose another time or reduce your party size.'
+                        )
+                        messages.error(request, error_msg)
+
+                        return render(request, 'reservations/edit_reservation.html', {
+                            'form': form,
+                            'reservation': reservation,
+                            'page_title': 'Edit Reservation'
+                        })
+
+                # Save reservation to database
+                updated_reservation.save()
+
+                messages.success(request, 'Reservation updated successfully!')
+                return redirect('my_reservations')
+
+            except Exception as e:
+                # Handle any database or other errors during reservation update
+                error_msg = f'Error updating reservation: {str(e)}'
+                messages.error(request, error_msg)
+        else:
+            # Display form validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        # GET request - display pre-filled form
+        form = ReservationForm(instance=reservation)
+
+    return render(request, 'reservations/edit_reservation.html', {
+        'form': form,
+        'reservation': reservation,
+        'page_title': 'Edit Reservation'
+    })
+
+
+
+@login_required
+@require_POST
+def cancel_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
+    if not reservation.is_cancelled:
+        reservation.is_cancelled = True
+        reservation.save()
+        messages.success(request, 'Your reservation has been cancelled successfully.')
+    else:
+        messages.warning(request, 'This reservation was already cancelled.')
+
+    return redirect('my_reservations')
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        # Handle profile update
+        if 'update_profile' in request.POST:
+            profile_form = UserProfileForm(request.POST, instance=request.user)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Your profile was successfully updated!')
+                return redirect('edit_profile')
+
+        # Handle password change
+        elif 'change_password' in request.POST:
+            password_form = PasswordChangeForm(request.user, request.POST)
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Important to keep the user logged in
+                messages.success(request, 'Your password was successfully updated!')
+                return redirect('edit_profile')
+            else:
+                messages.error(request, 'Please correct the error below.')
+    else:
+        profile_form = UserProfileForm(instance=request.user)
+        password_form = PasswordChangeForm(request.user)
+
+    return render(request, 'account/edit_profile.html', {
+        'profile_form': profile_form,
+        'password_form': password_form,
+    })

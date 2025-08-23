@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Reservations - Savory Heaven{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reservations/my_reservations.css' %}">
+<script src="{% static 'js/reservations/my_reservations.js' %}"></script>
+
+
+
+<!-- Hero Section -->
+<section class="reservations-hero">
+    <div class="container">
+        <h1 class="page-title fade-in">My Reservations</h1>
+        <p class="page-subtitle fade-in-delay">Manage your dining experiences</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="main-content">
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile-section fade-in">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <h3>Welcome, {{ user.first_name|default:user.username }}!</h3>
+                    <div class="profile-details">
+                        <p><i class="bi bi-envelope me-2"></i>{{ user.email }}</p>
+                        <p><i class="bi bi-calendar-check me-2"></i>Member since {{ user.date_joined|date:"F Y" }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'edit_profile' %}" class="btn-profile">
+                    <i class="bi bi-person-gear"></i>
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+        
+        <!-- Make Reservation -->
+        <div class="empty-state fade-in-delay">
+            <a href="{% url 'book' %}" class="btn-make-reservation">
+                <i class="bi bi-plus-lg"></i>
+                Make A Reservation
+            </a>
+        </div>
+
+        <!-- Reservations Grid -->
+        <div class="fade-in-delay">
+            {% if reservations %}
+                <div class="reservations-grid">
+                    {% for reservation in reservations %}
+                        <div class="reservation-card">
+                            <div class="reservation-header">
+                                <div class="reservation-date-time">
+                                    <div class="reservation-date">
+                                        {{ reservation.date|date:"F j, Y" }}
+                                    </div>
+                                    <div class="reservation-time">
+                                        <i class="bi bi-clock me-2"></i>{{ reservation.time_slot.display_name }}
+                                    </div>
+                                </div>
+                                <div class="reservation-status {% if reservation.is_cancelled %}status-cancelled{% else %}status-confirmed{% endif %}">
+                                    {% if reservation.is_cancelled %}
+                                        <i class="bi bi-x-circle me-1"></i>Cancelled
+                                    {% else %}
+                                        <i class="bi bi-check-circle me-1"></i>Confirmed
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="reservation-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Guests</span>
+                                    <span class="detail-value">{{ reservation.guests }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Name</span>
+                                    <span class="detail-value">{{ reservation.name }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Phone</span>
+                                    <span class="detail-value">{{ reservation.phone }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Email</span>
+                                    <span class="detail-value">{{ reservation.email }}</span>
+                                </div>
+                            </div>
+                            
+                            {% if reservation.special_requests %}
+                                <div class="special-requests">
+                                    <h5><i class="bi bi-chat-dots me-2"></i>Special Requests</h5>
+                                    <p>{{ reservation.special_requests }}</p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if not reservation.is_cancelled %}
+                                <div class="reservation-actions">
+                                    <a href="{% url 'edit_reservation' reservation.id %}" class="btn-edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+                                    <button type="button" class="btn-cancel" onclick="showCancelModal({{ reservation.id }}, '{{ reservation.date|date:"F j, Y" }}', '{{ reservation.time_slot.display_name }}')">
+                                        <i class="bi bi-x-lg"></i>
+                                        Cancel
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="empty-state fade-in-delay">
+                    <div class="empty-icon">
+                        <i class="bi bi-calendar-x"></i>
+                    </div>
+                    <h3 class="empty-title">No Reservations Yet</h3>
+                    <p class="empty-text">You haven't made any reservations with us yet. Ready to experience exceptional dining?</p>
+                    <a href="{% url 'book' %}" class="btn-make-reservation">
+                        <i class="bi bi-plus-lg"></i>
+                        Make Your First Reservation
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Cancel Confirmation Modal -->
+<div id="cancelModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Cancel Reservation</h4>
+            <span class="close" onclick="hideCancelModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to cancel your reservation for <strong id="modalDate"></strong> at <strong id="modalTime"></strong>?</p>
+            <p><small>This action cannot be undone.</small></p>
+        </div>
+        <div class="modal-actions">
+            <form id="cancelForm" method="post" action="">
+                {% csrf_token %}
+                <button type="submit" class="btn-confirm">Yes, Cancel Reservation</button>
+            </form>
+            <button type="button" class="btn-modal-cancel" onclick="hideCancelModal()">Keep Reservation</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

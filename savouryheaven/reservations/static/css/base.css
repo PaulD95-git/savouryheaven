@@ -369,12 +369,12 @@ body {
 
 .food-burger-icon::before {
     top: -2px;
-    left: 8px;
+    left: 6px;
 }
 
 .food-burger-icon::after {
     top: -2px;
-    right: 8px;
+    right: 6px;
 }
 
 /* Eyes pop out with dramatic animation when burger is expanded */

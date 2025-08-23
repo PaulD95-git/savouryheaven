@@ -2,6 +2,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .models import Reservation, TimeSlot
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 
 class ReservationForm(forms.ModelForm):
@@ -68,3 +70,16 @@ class ReservationForm(forms.ModelForm):
                     f"No seats remaining ({remaining}). Please choose "
                     "another time slot."
                 )
+
+
+class UserProfileForm(UserChangeForm):
+
+    password = None
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].required = True

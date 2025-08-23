@@ -1,29 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Book a Table{% endblock %}
+{% block title %}Edit Reservation{% endblock %}
 
 {% block content %}
 <!-- CSS and JS imports -->
 <link rel="stylesheet" href="{% static 'css/reservations/book.css' %}">
-<script src="{% static 'js/reservations/book.js' %}"></script>
+<script src="{% static 'js/reservations/edit_reservation.js' %}"></script>
 
 <!-- ============================================= -->
 <!-- HERO SECTION -->
 <!-- ============================================= -->
 <section class="booking-hero">
     <div class="booking-hero-content">
-        <h1 class="display-4 fw-bold mb-3">Reserve Your Table</h1>
-        <p class="lead">Experience culinary excellence at Savory Heaven</p>
+        <h1 class="display-4 fw-bold mb-3">Edit Your Reservation</h1>
+        <p class="lead">Update your dining experience at Savory Heaven</p>
     </div>
 </section>
 
 <!-- ============================================= -->
-<!-- MAIN BOOKING FORM -->
+<!-- MAIN EDITING FORM -->
 <!-- ============================================= -->
 <div class="booking-container">
     <div class="booking-card fade-in">
-        <h2 class="section-title">Make a Reservation</h2>
+        <h2 class="section-title">Update Your Reservation</h2>
+        
+        <div class="info-box mb-4">
+            <p class="mb-0">You are editing your reservation for <strong>{{ reservation.date }} at {{ reservation.time_slot.display_name }}</strong> originally made on {{ reservation.created_at|date:"F j, Y" }}.</p>
+        </div>
         
         <form id="reservationForm" method="post" novalidate>
             {% csrf_token %}
@@ -78,7 +82,7 @@
                 <div id="timeSlotsContainer" class="time-slots-container">
                     <div class="time-slot">Please select a date first</div>
                 </div>
-                <input type="hidden" id="id_time_slot" name="time_slot">
+                <input type="hidden" id="id_time_slot" name="time_slot" value="{{ reservation.time_slot.id }}">
                 {% if form.time_slot.errors %}
                 <div class="field-error">{{ form.time_slot.errors.0 }}</div>
                 {% endif %}
@@ -89,10 +93,10 @@
                 <label class="form-label">Number of Guests *</label>
                 <div class="guests-selector">
                     <button type="button" class="guests-btn" id="decreaseGuests">−</button>
-                    <span class="guests-count" id="guestCount">2</span>
+                    <span class="guests-count" id="guestCount">{{ reservation.guests }}</span>
                     <button type="button" class="guests-btn" id="increaseGuests">+</button>
                 </div>
-                <input type="hidden" id="id_guests" name="guests" value="2">
+                <input type="hidden" id="id_guests" name="guests" value="{{ reservation.guests }}">
                 {% if form.guests.errors %}
                 <div class="field-error">{{ form.guests.errors.0 }}</div>
                 {% endif %}
@@ -119,12 +123,16 @@
             <!-- FORM SUBMISSION -->
             <!-- ============================================= -->
             <button type="submit" class="submit-btn" id="submitBtn">
-                <span id="submitText">Reserve Table</span>
-                <span id="loadingText" style="display: none;">Processing...</span>
+                <span id="submitText">Save Changes</span>
+                <span id="loadingText" style="display: none;">Updating...</span>
             </button>
-        </form>
-    </div>
 
+        </form>
+        
+        <div class="text-center mt-4">
+            <p class="mb-0">Need to cancel instead? <a href="{% url 'cancel_reservation' reservation.id %}">Cancel this reservation</a></p>
+        </div>
+    </div>
     <!-- Form-wide errors -->
             {% if form.non_field_errors %}
                 <div class="error-message">

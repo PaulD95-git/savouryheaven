@@ -150,8 +150,7 @@ USE_TZ = True
 # -------------------------------------------------------------------
 
 STATIC_URL = 'static/'
-# Folder for project-wide static files
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY FIELD TYPE
@@ -177,8 +176,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Email authentication settings
-ACCOUNT_EMAIL_REQUIRED = True  # Require email during signup
-# Can be "none", "optional", or "mandatory"
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = "optional"
-ACCOUNT_USERNAME_REQUIRED = False  # Use email instead of username
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Log in with email
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
