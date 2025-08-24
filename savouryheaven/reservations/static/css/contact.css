@@ -1,0 +1,110 @@
+/* ============================================= */
+/* CONTACT HERO SECTION */
+/* ============================================= */
+.contact-hero-section {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+        rgba(75, 30, 47, 0.9) 0%, 
+        rgba(99, 50, 68, 0.7) 50%, 
+        rgba(75, 30, 47, 0.9) 100%
+    ), url('{% static "images/contact-hero-bg.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.contact-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
+}
+
+.contact-hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--cream);
+    margin-bottom: 3rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* ============================================= */
+/* CONTACT INFO SECTION */
+/* ============================================= */
+.contact-info-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, 
+        rgba(75, 30, 47, 0.05) 0%, 
+        rgba(99, 50, 68, 0.1) 100%
+    );
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.contact-card {
+    background: rgba(99, 50, 68, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-card:hover::before {
+    opacity: 1;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.contact-icon {
+    font-size: 2.5rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+}
+
+.contact-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.contact-card p {
+    color: var(--cream);
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}

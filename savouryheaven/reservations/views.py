@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db import models
+from django.views.generic import TemplateView
 
 
 def index(request):
@@ -32,6 +33,10 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+
+
+def contact(request):
+    return render(request, 'contact.html')
 
 
 @login_required

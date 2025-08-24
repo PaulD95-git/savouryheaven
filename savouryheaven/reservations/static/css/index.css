@@ -1,8 +1,4 @@
 /* ============================================= */
-/* Index Page Styles for Savory Heaven */
-/* ============================================= */
-
-/* ============================================= */
 /* HERO SECTION */
 /* ============================================= */
 .hero-section {
@@ -228,9 +224,6 @@
 /* ============================================= */
 /* ABOUT SECTION */
 /* ============================================= */
-.about-content {
-    padding-right: 2rem;
-}
 
 .about-text {
     font-size: 1.2rem;
@@ -267,33 +260,6 @@
     letter-spacing: 1px;
 }
 
-.about-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-placeholder {
-    background: rgba(212, 175, 55, 0.1);
-    border: 2px dashed var(--gold);
-    border-radius: 20px;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: var(--gold);
-    width: 100%;
-    max-width: 400px;
-    aspect-ratio: 4/3;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.image-placeholder:hover {
-    background: rgba(212, 175, 55, 0.2);
-    transform: scale(1.02);
-}
 
 /* ============================================= */
 /* MENU PREVIEW SECTION */

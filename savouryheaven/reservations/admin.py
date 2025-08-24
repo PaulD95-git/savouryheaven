@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 import os
-from .models import TimeSlot, Reservation, MenuCategory, MenuItem
+from .models import (
+    TimeSlot, Reservation, MenuCategory, MenuItem
+)
 
 
 @admin.register(TimeSlot)
@@ -60,7 +62,7 @@ class MenuCategoryAdmin(admin.ModelAdmin):
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'category', 'price', 'is_available', 
+        'name', 'category', 'price', 'is_available',
         'is_featured', 'order', 'image_preview'
     )
     list_filter = ('category', 'is_available', 'is_featured')

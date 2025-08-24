@@ -10,6 +10,7 @@ from .views import (
     edit_profile,
     menu_view,
     about,
+    contact
 )
 
 
@@ -32,4 +33,5 @@ urlpatterns = [
         name='cancel_reservation'
     ),
     path('about/', about, name='about'),
+    path('contact/', contact, name='contact'),
 ]
