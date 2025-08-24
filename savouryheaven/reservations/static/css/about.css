@@ -1,0 +1,561 @@
+/* ============================================= */
+/* About Page Styles for Savory Heaven */
+/* ============================================= */
+
+/* ============================================= */
+/* ABOUT HERO SECTION */
+/* ============================================= */
+.about-hero-section {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+        rgba(75, 30, 47, 0.9) 0%, 
+        rgba(99, 50, 68, 0.7) 50%, 
+        rgba(75, 30, 47, 0.9) 100%
+    ), url('{% static "images/about-hero-bg.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.about-hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
+}
+
+.about-hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--cream);
+    margin-bottom: 3rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* ============================================= */
+/* HISTORY SECTION */
+/* ============================================= */
+.history-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, 
+        rgba(75, 30, 47, 0.05) 0%, 
+        rgba(99, 50, 68, 0.1) 100%
+    );
+}
+
+.history-content {
+    padding-right: 2rem;
+}
+
+.history-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: var(--cream);
+    opacity: 0.9;
+}
+
+.signature {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.signature-img {
+    max-width: 200px;
+    margin-bottom: 1rem;
+    filter: sepia(30%) brightness(110%);
+}
+
+.signature-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.signature-title {
+    color: var(--cream);
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.history-image {
+    position: relative;
+}
+
+.image-frame {
+    border: 5px solid var(--gold);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.image-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(75, 30, 47, 0.8);
+    color: var(--cream);
+    padding: 1rem;
+    text-align: center;
+    font-style: italic;
+}
+
+/* ============================================= */
+/* TEAM SECTION */
+/* ============================================= */
+.team-section {
+    padding: 6rem 0;
+    background: rgba(99, 50, 68, 0.1);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.team-card {
+    background: rgba(99, 50, 68, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.team-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.team-card:hover .team-image img {
+    transform: scale(1.1);
+}
+
+.team-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(75, 30, 47, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: var(--gold);
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--cream);
+    transform: translateY(-3px);
+}
+
+.team-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.team-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.team-role {
+    color: var(--cream);
+    opacity: 0.8;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.team-bio {
+    color: var(--cream);
+    opacity: 0.9;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* ============================================= */
+/* VALUES SECTION */
+/* ============================================= */
+.values-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, 
+        rgba(99, 50, 68, 0.1) 0%, 
+        rgba(75, 30, 47, 0.05) 100%
+    );
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.value-card {
+    background: rgba(99, 50, 68, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.value-card:hover::before {
+    opacity: 1;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.value-icon {
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+}
+
+.value-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.value-card p {
+    color: var(--cream);
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* ============================================= */
+/* AWARDS SECTION */
+/* ============================================= */
+.awards-section {
+    padding: 6rem 0;
+    background: rgba(99, 50, 68, 0.1);
+}
+
+.awards-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+}
+
+.awards-timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        var(--gold) 10%, 
+        var(--gold) 90%, 
+        transparent 100%);
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    width: 100%;
+}
+
+.timeline-item:nth-child(odd) {
+    padding-right: 50%;
+}
+
+.timeline-item:nth-child(even) {
+    padding-left: 50%;
+}
+
+.timeline-year {
+    position: absolute;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--gold), #e6c558);
+    color: var(--burgundy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.timeline-item:nth-child(odd) .timeline-year {
+    right: -40px;
+}
+
+.timeline-item:nth-child(even) .timeline-year {
+    left: -40px;
+}
+
+.timeline-content {
+    background: rgba(99, 50, 68, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+}
+
+.timeline-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+    color: var(--cream);
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* ============================================= */
+/* TESTIMONIALS SECTION */
+/* ============================================= */
+.testimonials-section {
+    padding: 6rem 0;
+    background: linear-gradient(180deg, 
+        rgba(99, 50, 68, 0.1) 0%, 
+        rgba(75, 30, 47, 0.05) 100%
+    );
+}
+
+.testimonials-slider {
+    max-width: 800px;
+    margin: 4rem auto 0;
+    position: relative;
+    height: 300px;
+}
+
+.testimonial-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.testimonial-card.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.testimonial-content {
+    background: rgba(99, 50, 68, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.rating {
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--cream);
+    opacity: 0.9;
+    font-style: italic;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.testimonial-text::before,
+.testimonial-text::after {
+    content: '"';
+    font-size: 3rem;
+    color: var(--gold);
+    opacity: 0.3;
+    position: absolute;
+}
+
+.testimonial-text::before {
+    top: -1rem;
+    left: -1rem;
+}
+
+.testimonial-text::after {
+    bottom: -2rem;
+    right: -1rem;
+}
+
+.testimonial-author h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+}
+
+.testimonial-author p {
+    color: var(--cream);
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* ============================================= */
+/* RESPONSIVE DESIGN */
+/* ============================================= */
+@media (max-width: 992px) {
+    .history-content {
+        padding-right: 0;
+        margin-bottom: 3rem;
+    }
+    
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        padding: 0 0 0 50px;
+    }
+    
+    .timeline-year {
+        left: -25px !important;
+        right: auto !important;
+        width: 60px;
+        height: 60px;
+        font-size: 1rem;
+    }
+    
+    .awards-timeline::before {
+        left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero-section {
+        height: 50vh;
+        background-attachment: scroll;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonials-slider {
+        height: 400px;
+    }
+    
+    .testimonial-content {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-hero-section {
+        height: 40vh;
+    }
+    
+    .history-section,
+    .team-section,
+    .values-section,
+    .awards-section,
+    .testimonials-section {
+        padding: 4rem 0;
+    }
+    
+    .timeline-item {
+        padding: 0 0 0 40px !important;
+    }
+    
+    .timeline-year {
+        width: 50px;
+        height: 50px;
+        font-size: 0.9rem;
+        left: -20px !important;
+    }
+    
+    .timeline-content {
+        padding: 1.5rem;
+    }
+    
+    .testimonials-slider {
+        height: 450px;
+    }
+}

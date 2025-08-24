@@ -9,6 +9,7 @@ from .views import (
     cancel_reservation,
     edit_profile,
     menu_view,
+    about,
 )
 
 
@@ -19,7 +20,7 @@ urlpatterns = [
     path('api/available-slots/', get_available_slots, name='available_slots'),
     path('my-reservations/', my_reservations, name='my_reservations'),
     path('edit-profile/', edit_profile, name='edit_profile'),
-    path('menu/', menu_view, name='menu'),  # Add this line
+    path('menu/', menu_view, name='menu'),
     path(
         'edit-reservation/<int:reservation_id>/',
         edit_reservation,
@@ -30,4 +31,5 @@ urlpatterns = [
         cancel_reservation,
         name='cancel_reservation'
     ),
+    path('about/', about, name='about'),
 ]

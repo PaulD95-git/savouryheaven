@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Savory Heaven{% endblock %}
+
+{% block content %}
+<!-- CSS imports -->
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+
+<!-- ============================================= -->
+<!-- HERO SECTION -->
+<!-- ============================================= -->
+<section class="about-hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1 class="about-hero-title fade-in">Our Story</h1>
+                <p class="about-hero-subtitle fade-in-delay">A legacy of culinary excellence since 1995</p>
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll-indicator">
+        <div class="scroll-arrow"></div>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- HISTORY SECTION -->
+<!-- ============================================= -->
+<section class="history-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="history-content">
+                    <h2 class="section-title">From Humble Beginnings</h2>
+                    <p class="history-text">
+                        Savory Heaven began as a small family-owned bistro with just ten tables and a dream. 
+                        Founded by Master Chef Antonio Martinez and his wife Isabella, our restaurant was built 
+                        on the principles of exceptional food, warm hospitality, and creating memorable experiences.
+                    </p>
+                    <p class="history-text">
+                        What started as a neighborhood gem has grown into a culinary destination, but we've never 
+                        lost sight of our roots. Every dish tells a story, and every meal is prepared with the same 
+                        passion that inspired our first service over 25 years ago.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="history-image">
+                    <div class="image-frame">
+                        <img src="{% static 'images/restaurant-history.jpg' %}" alt="Savory Heaven in the early days" class="img-fluid">
+                        <div class="image-caption">Our original location in 1995</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- TEAM SECTION -->
+<!-- ============================================= -->
+<section class="team-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Meet Our Culinary Artists</h2>
+                <p class="section-subtitle">The passionate team behind every exceptional dish</p>
+            </div>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-image">
+                    <img src="{% static 'images/chef-antonio.jpg' %}" alt="Chef Antonio Martinez">
+                    <div class="team-overlay">
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h3>Antonio Martinez</h3>
+                    <p class="team-role">Executive Chef & Founder</p>
+                    <p class="team-bio">Trained in Paris and Milan, Chef Antonio brings 30 years of international experience to every creation.</p>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-image">
+                    <img src="{% static 'images/chef-isabella.jpg' %}" alt="Chef Isabella Martinez">
+                    <div class="team-overlay">
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h3>Isabella Martinez</h3>
+                    <p class="team-role">Pastry Chef & Co-Founder</p>
+                    <p class="team-bio">Award-winning pastry chef specializing in French and Italian dessert techniques.</p>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-image">
+                    <img src="{% static 'images/chef-michael.jpg' %}" alt="Chef Michael Chen">
+                    <div class="team-overlay">
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h3>Michael Chen</h3>
+                    <p class="team-role">Sous Chef</p>
+                    <p class="team-bio">Specializes in Asian fusion cuisine with 15 years of experience in Michelin-starred restaurants.</p>
+                </div>
+            </div>
+            
+            <div class="team-card">
+                <div class="team-image">
+                    <img src="{% static 'images/sommelier-sophia.jpg' %}" alt="Sommelier Sophia Rossi">
+                    <div class="team-overlay">
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h3>Sophia Rossi</h3>
+                    <p class="team-role">Head Sommelier</p>
+                    <p class="team-bio">Certified Master Sommelier with expertise in Old World wines and perfect pairings.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- VALUES SECTION -->
+<!-- ============================================= -->
+<section class="values-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Our Guiding Principles</h2>
+                <p class="section-subtitle">The foundation of everything we do</p>
+            </div>
+        </div>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="bi bi-tree"></i>
+                </div>
+                <h3>Sustainability</h3>
+                <p>We partner with local farmers and producers to source the freshest ingredients while supporting our community and reducing our environmental impact.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+                <h3>Passion</h3>
+                <p>Every dish is crafted with love and attention to detail. Our team's dedication is the secret ingredient in every recipe.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="bi bi-star"></i>
+                </div>
+                <h3>Excellence</h3>
+                <p>We never compromise on quality. From ingredients to service, we strive for perfection in every aspect of your dining experience.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3>Community</h3>
+                <p>We believe in creating a welcoming space where guests become family and every meal feels like a celebration.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- AWARDS SECTION -->
+<!-- ============================================= -->
+<section class="awards-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Recognition & Awards</h2>
+                <p class="section-subtitle">Celebrating excellence in culinary arts</p>
+            </div>
+        </div>
+        
+        <div class="awards-timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                <div class="timeline-content">
+                    <h3>Michelin Star</h3>
+                    <p>Awarded our first Michelin Star for exceptional cuisine</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2021</div>
+                <div class="timeline-content">
+                    <h3>Best Fine Dining Restaurant</h3>
+                    <p>Recognized by Culinary Excellence Awards</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2019</div>
+                <div class="timeline-content">
+                    <h3>Chef of the Year</h3>
+                    <p>Chef Antonio Martinez awarded by International Chef Association</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2017</div>
+                <div class="timeline-content">
+                    <h3>Wine Spectator Award</h3>
+                    <p>Excellence in wine program and sommelier service</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2015</div>
+                <div class="timeline-content">
+                    <h3>Best Dessert Menu</h3>
+                    <p>Pastry Chef Isabella recognized for innovative desserts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================= -->
+<!-- TESTIMONIALS SECTION -->
+<!-- ============================================= -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Guest Experiences</h2>
+                <p class="section-subtitle">What our cherished guests say about us</p>
+            </div>
+        </div>
+        
+        <div class="testimonials-slider">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "An unforgettable dining experience! The truffle pasta was perfection, and the wine pairing recommended by Sophia elevated the meal to another level. Worth every penny."
+                    </p>
+                    <div class="testimonial-author">
+                        <h4>Emily Johnson</h4>
+                        <p>Food Critic, Epicurean Magazine</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "We celebrated our anniversary at Savory Heaven, and the team made it magical. Personalized menu, impeccable service, and the most delicious chocolate soufflé I've ever tasted."
+                    </p>
+                    <div class="testimonial-author">
+                        <h4>Robert & Maria Williams</h4>
+                        <p>Regular Guests since 2018</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <div class="rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "As a chef myself, I appreciate the technical mastery and creativity displayed in every dish. The fusion of flavors is extraordinary, and presentation is artwork."
+                    </p>
+                    <div class="testimonial-author">
+                        <h4>Daniel Lee</h4>
+                        <p>Executive Chef, Ocean Breeze</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- JavaScript for About Page -->
+<script>
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections
+    document.querySelectorAll('.history-section, .team-section, .values-section, .awards-section, .testimonials-section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // Team card hover effect
+    document.querySelectorAll('.team-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.querySelector('.team-overlay').style.opacity = '1';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.querySelector('.team-overlay').style.opacity = '0';
+        });
+    });
+
+    // Testimonial slider functionality
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial-card');
+    
+    function showTestimonial(index) {
+        testimonials.forEach(testimonial => {
+            testimonial.classList.remove('active');
+        });
+        
+        testimonials[index].classList.add('active');
+    }
+    
+    // Auto-rotate testimonials
+    setInterval(() => {
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        showTestimonial(currentTestimonial);
+    }, 5000);
+    
+    // Initialize first testimonial
+    showTestimonial(0);
+</script>
+{% endblock %}
