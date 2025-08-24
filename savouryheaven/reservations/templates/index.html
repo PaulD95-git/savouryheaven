@@ -7,6 +7,7 @@
 <!-- CSS imports -->
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 
+
 <!-- ============================================= -->
 <!-- HERO SECTION -->
 <!-- ============================================= -->
@@ -55,14 +56,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="bi bi-image" style="font-size: 4rem; color: var(--gold);"></i>
-                        <p>Placeholder</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -70,7 +63,81 @@
 <!-- ============================================= -->
 <!-- MENU PREVIEW SECTION -->
 <!-- ============================================= -->
-
+<section class="menu-preview-section" id="menu-preview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="section-title">Our Culinary Creations</h2>
+                <p class="section-subtitle">A taste of our award-winning menu</p>
+            </div>
+        </div>
+        
+        <div class="menu-preview-tabs">
+            <div class="tab-buttons">
+                {% for category in menu_categories %}
+                <button class="tab-button {% if forloop.first %}active{% endif %}" data-category="{{ category.id }}">
+                    {{ category.name }}
+                </button>
+                {% endfor %}
+            </div>
+            
+            <div class="tab-content">
+                {% for category in menu_categories %}
+                <div class="tab-pane {% if forloop.first %}active{% endif %}" id="category-{{ category.id }}">
+                    <div class="menu-preview-grid">
+                        {% for item in category.featured_items %}
+                        <div class="menu-preview-card">
+                            <div class="menu-preview-image">
+                                {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                                {% else %}
+                                <div class="image-placeholder">
+                                    <i class="bi bi-image"></i>
+                                    <p>Image Coming Soon</p>
+                                </div>
+                                {% endif %}
+                                {% if item.is_featured %}
+                                <span class="featured-badge">Chef's Choice</span>
+                                {% endif %}
+                            </div>
+                            <div class="menu-preview-content">
+                                <div class="item-header">
+                                    <h3 class="item-name">{{ item.name }}</h3>
+                                    <span class="item-price">${{ item.price }}</span>
+                                </div>
+                                <p class="item-description">{{ item.description }}</p>
+                                {% if item.ingredients %}
+                                <div class="item-ingredients">
+                                    <strong>Ingredients:</strong> {{ item.ingredients }}
+                                </div>
+                                {% endif %}
+                                {% if item.calories %}
+                                <div class="item-calories">
+                                    <strong>Calories:</strong> {{ item.calories }}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="empty-category">
+                            <div class="empty-icon">
+                                <i class="bi bi-egg-fried"></i>
+                            </div>
+                            <h3 class="empty-title">Menu Coming Soon</h3>
+                            <p class="empty-text">We're preparing something special for this category</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'menu' %}" class="btn-primary">View Full Menu</a>
+        </div>
+    </div>
+</section>
 
 <!-- ============================================= -->
 <!-- EXPERIENCE SECTION -->
@@ -173,5 +240,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Tab functionality for menu preview
+document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Hide all tab panes
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        
+        // Show the selected tab pane
+        const categoryId = button.getAttribute('data-category');
+        document.getElementById(`category-${categoryId}`).classList.add('active');
+    });
+});
 </script>
 {% endblock %}

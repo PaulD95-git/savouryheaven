@@ -3,15 +3,31 @@ from django.views.decorators.http import require_POST
 from datetime import datetime
 from django.contrib import messages
 from .forms import ReservationForm, UserProfileForm
-from .models import TimeSlot, Reservation, MenuCategory
+from .models import TimeSlot, Reservation, MenuCategory, MenuItem
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db import models
 
 
 def index(request):
-    return render(request, 'index.html')
+    # Get categories with their featured menu items
+    categories = MenuCategory.objects.prefetch_related(
+        models.Prefetch(
+            'menu_items',
+            queryset=MenuItem.objects.filter(
+                is_available=True,
+                is_featured=True
+            )[:3],
+            to_attr='featured_items'
+        )
+    ).all()
+
+    context = {
+        'menu_categories': categories,
+    }
+    return render(request, 'index.html', context)
 
 
 @login_required
