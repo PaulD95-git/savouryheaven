@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 
 
 class TimeSlot(models.Model):
@@ -91,3 +92,47 @@ class Reservation(models.Model):
     def time(self):
         """Backward-compatible time accessor (for templates)."""
         return self.time_slot.start_time
+
+
+class MenuCategory(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = "Menu Categories"
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+
+class MenuItem(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))]
+    )
+    category = models.ForeignKey(
+        MenuCategory,
+        related_name='menu_items',
+        on_delete=models.CASCADE
+    )
+    is_available = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+    image = models.ImageField(
+        upload_to='menu_images/',
+        blank=True,
+        null=True
+    )
+    ingredients = models.TextField(blank=True)
+    calories = models.PositiveIntegerField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['category__order', 'order', 'name']
+
+    def __str__(self):
+        return self.name

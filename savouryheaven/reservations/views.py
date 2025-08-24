@@ -3,12 +3,11 @@ from django.views.decorators.http import require_POST
 from datetime import datetime
 from django.contrib import messages
 from .forms import ReservationForm, UserProfileForm
-from .models import TimeSlot, Reservation
+from .models import TimeSlot, Reservation, MenuCategory
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
 
 
 def index(request):
@@ -59,8 +58,10 @@ def reservation_view(request):
                     # Calculate remaining spots and show error message
                     remaining = max_capacity - total_booked_guests
                     error_msg = (
-                        f'Only {remaining} guest spots left in this time slot.'
-                        'Please choose another time or reduce your party size.'
+                        f'Only {remaining} guest spots left in this time.'
+                        (
+                            'Please choose another time or reduce your party.'
+                        )
                     )
                     messages.error(request, error_msg)
 
@@ -239,9 +240,16 @@ def edit_reservation(request, reservation_id):
         HttpResponse: Rendered edit form or redirect to success page
     """
     try:
-        reservation = Reservation.objects.get(id=reservation_id, user=request.user)
+        reservation = Reservation.objects.get(
+            id=reservation_id,
+            user=request.user
+        )
     except Reservation.DoesNotExist:
-        messages.error(request, "Reservation not found or you don't have permission to edit it.")
+        messages.error(
+            request,
+            "Reservation not found or you don't have permission "
+            "to edit it."
+        )
         return redirect('my_reservations')
 
     if request.method == 'POST':
@@ -253,8 +261,10 @@ def edit_reservation(request, reservation_id):
                 updated_reservation = form.save(commit=False)
 
                 # Check if time slot or date has changed
-                if (updated_reservation.date != reservation.date or
-                        updated_reservation.time_slot != reservation.time_slot):
+                if (
+                    updated_reservation.date != reservation.date or
+                    updated_reservation.time_slot != reservation.time_slot
+                ):
 
                     # Calculate total guests already booked for this time slot
                     existing_bookings = Reservation.objects.filter(
@@ -269,20 +279,27 @@ def edit_reservation(request, reservation_id):
 
                     # Check if new booking would exceed time slot capacity
                     max_capacity = updated_reservation.time_slot.max_capacity
-                    if total_booked_guests + updated_reservation.guests > max_capacity:
+                    if (
+                        total_booked_guests + updated_reservation.guests
+                        > max_capacity
+                    ):
                         # Calculate remaining spots and show error message
                         remaining = max_capacity - total_booked_guests
                         error_msg = (
-                            f'Only {remaining} guest spots left in this time slot. '
-                            'Please choose another time or reduce your party size.'
+                            f'Only {remaining} guest spots left in this time. '
+                            'Please choose another time or reduce your party.'
                         )
                         messages.error(request, error_msg)
 
-                        return render(request, 'reservations/edit_reservation.html', {
-                            'form': form,
-                            'reservation': reservation,
-                            'page_title': 'Edit Reservation'
-                        })
+                        return render(
+                            request,
+                            'reservations/edit_reservation.html',
+                            {
+                                'form': form,
+                                'reservation': reservation,
+                                'page_title': 'Edit Reservation'
+                            }
+                        )
 
                 # Save reservation to database
                 updated_reservation.save()
@@ -310,16 +327,22 @@ def edit_reservation(request, reservation_id):
     })
 
 
-
 @login_required
 @require_POST
 def cancel_reservation(request, reservation_id):
-    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+    reservation = get_object_or_404(
+        Reservation,
+        id=reservation_id,
+        user=request.user
+    )
 
     if not reservation.is_cancelled:
         reservation.is_cancelled = True
         reservation.save()
-        messages.success(request, 'Your reservation has been cancelled successfully.')
+        messages.success(
+            request,
+            'Your reservation has been cancelled successfully.'
+        )
     else:
         messages.warning(request, 'This reservation was already cancelled.')
 
@@ -334,7 +357,9 @@ def edit_profile(request):
             profile_form = UserProfileForm(request.POST, instance=request.user)
             if profile_form.is_valid():
                 profile_form.save()
-                messages.success(request, 'Your profile was successfully updated!')
+                messages.success(
+                    request, 'Your profile was successfully updated!'
+                )
                 return redirect('edit_profile')
 
         # Handle password change
@@ -342,8 +367,10 @@ def edit_profile(request):
             password_form = PasswordChangeForm(request.user, request.POST)
             if password_form.is_valid():
                 user = password_form.save()
-                update_session_auth_hash(request, user)  # Important to keep the user logged in
-                messages.success(request, 'Your password was successfully updated!')
+                update_session_auth_hash(request, user)
+                messages.success(
+                    request, 'Your password was successfully updated!'
+                )
                 return redirect('edit_profile')
             else:
                 messages.error(request, 'Please correct the error below.')
@@ -355,3 +382,18 @@ def edit_profile(request):
         'profile_form': profile_form,
         'password_form': password_form,
     })
+
+
+def menu_view(request):
+    categories = MenuCategory.objects.prefetch_related('menu_items').all()
+
+    # Only show available menu items
+    for category in categories:
+        category.available_items = (
+            category.menu_items.filter(is_available=True)
+        )
+
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'reservations/menu.html', context)

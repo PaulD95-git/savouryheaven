@@ -4,6 +4,7 @@ Django settings for savouryheaven project.
 """
 
 from pathlib import Path
+import os
 
 # -------------------------------------------------------------------
 # BASE SETTINGS
@@ -181,3 +182,11 @@ ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# -------------------------------------------------------------------
+# MEDIA FILES
+# -------------------------------------------------------------------
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

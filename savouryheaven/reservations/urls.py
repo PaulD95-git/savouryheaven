@@ -8,7 +8,9 @@ from .views import (
     edit_reservation,
     cancel_reservation,
     edit_profile,
+    menu_view,
 )
+
 
 urlpatterns = [
     path('', index, name='home'),
@@ -17,6 +19,7 @@ urlpatterns = [
     path('api/available-slots/', get_available_slots, name='available_slots'),
     path('my-reservations/', my_reservations, name='my_reservations'),
     path('edit-profile/', edit_profile, name='edit_profile'),
+    path('menu/', menu_view, name='menu'),  # Add this line
     path(
         'edit-reservation/<int:reservation_id>/',
         edit_reservation,
