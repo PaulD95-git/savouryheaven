@@ -10,8 +10,6 @@ from decouple import config
 import dj_database_url
 import django_heroku
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
 
 load_dotenv()
 
@@ -64,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,7 +85,7 @@ WSGI_APPLICATION = 'savouryheaven.wsgi.application'
 # TEMPLATES
 # -------------------------------------------------------------------
 
-TEMPLATE_DIR = BASE_DIR / 'templates'  # Project-level templates folder
+TEMPLATE_DIR = BASE_DIR / 'templates'
 
 TEMPLATES = [
     {
@@ -110,7 +109,11 @@ TEMPLATES = [
 # -------------------------------------------------------------------
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=not DEBUG
+    )
 }
 
 # -------------------------------------------------------------------
@@ -203,3 +206,9 @@ else:
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# -------------------------------------------------------------------
+# DJANGO-HEROKU SETTINGS
+# -------------------------------------------------------------------
+# Activate Django-Heroku.
+django_heroku.settings(locals())

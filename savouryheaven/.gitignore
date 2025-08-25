@@ -1,5 +1,0 @@
-.env
-.env
-*.sqlite3
-.env.local
-__pycache__/
