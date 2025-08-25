@@ -1,1 +1,1 @@
-web: gunicorn savouryheaven.savouryheaven.wsgi --log-file -
+web: gunicorn savouryheaven.wsgi --log-file -
