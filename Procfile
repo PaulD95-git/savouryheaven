@@ -1,1 +1,1 @@
-web: gunicorn savouryheaven.savouryheaven.wsgi
+web: gunicorn savouryheaven.wsgi

@@ -8,6 +8,10 @@ import os
 from dotenv import load_dotenv
 from decouple import config
 import dj_database_url
+import django_heroku
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 load_dotenv()
 
