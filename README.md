@@ -40,33 +40,33 @@ Savoury Heaven is a sophisticated restaurant website featuring an online booking
    - **Flexible Booking Options**: Specify the number of guests, choose your preferred date and time, and add any special requests or dietary requirements (e.g., high chair, allergies) to ensure the restaurant is prepared for your visit.
    - **Instant Confirmation**: Receive immediate on-screen confirmation with a summary of your reservation details upon successful booking.
 
-   ![Booking a Table](static/readme/images/booking_table.JPG)
-   ![Booking a Table](static/readme/images/booking_table2.JPG)
-   ![Booking a Table](static/readme/images/booking_table3.JPG)
-   ![Booking a Table](static/readme/images/booking_success.JPG)
+   ![Booking a Table](static/images/readme/booking_table.JPG)
+   ![Booking a Table](static/images/readme/booking_table2.JPG)
+   ![Booking a Table](static/images/readme/booking_table3.JPG)
+   ![Booking a Table](static/images/readme/booking_success.JPG)
 
 ### 2. **Manage Reservations (Cancel/Edit)**
    - **User Control**: Users have a dedicated dashboard to view all their upcoming and past reservations. This provides a single, convenient location to manage all booking-related activities.
    - **Easy Modifications**: Need to change the time, date, or number of guests? The edit feature allows users to update their reservation details effortlessly, subject to availability.
    - **Hassle-Free Cancellations**: Cancel reservations with a single click. A confirmation dialog prevents accidental cancellations.
 
-   ![Reservation](static/readme/images/reservations_page.JPG)
-   ![Reservation](static/readme/images/reservations_page2.JPG)
-   ![Cancel/Edit Reservation](static/readme/images/cancel_booking.JPG)
-   ![Cancel/Edit Reservation](static/readme/images/edit_booking.JPG)
+   ![Reservation](static/images/readme/reservations_page.JPG)
+   ![Reservation](static/images/readme/reservations_page2.JPG)
+   ![Cancel/Edit Reservation](static/images/readme/cancel_booking.JPG)
+   ![Cancel/Edit Reservation](static/images/readme/edit_booking.JPG)
 
 ### 3. **Secure User Authentication (Login)**
    - **Protected Accounts**: Users can securely log in to their personal accounts using encrypted credentials, ensuring their personal data and reservation history remain private.
    - **Password Recovery**: A streamlined "Forgot Password" feature allows users to securely reset their password via email, ensuring they never lose access to their account.
 
-   ![Login](static/readme/images/login.JPG)
+   ![Login](static/images/readme/login.JPG)
 
 
 ### 4. **Easy Account Creation (Signup)**
    - **Quick Registration**: New users can create an account in moments by providing essential information. This process is designed for maximum efficiency and a minimal number of steps.
    - **Email Verification**: A confirmation email is sent upon registration to verify the user's email address, enhancing security and reducing the chance of fake or erroneous accounts.
 
-   ![Signup](static/readme/images/signup.JPG)
+   ![Signup](static/images/readme/signup.JPG)
 
 
 ### 5. **Comprehensive Admin Dashboard**
@@ -75,30 +75,30 @@ Savoury Heaven is a sophisticated restaurant website featuring an online booking
    - **Manage Users**: Administrators can view, edit, or deactivate user accounts, maintaining the platform's integrity and user base.
    - **Manage Reservations**: Admins have the authority to modify, cancel, or add notes to any reservation, providing the flexibility to handle customer service inquiries and special requests directly.
 
-   ![Admin Dashboard](static/readme/images/admin.JPG)
+   ![Admin Dashboard](static/images/readme/admin.JPG)
 
 
 ### 6. **Fully Responsive Design**
    - **Accessibility on Any Device**: The application is built with a mobile-first approach, ensuring a flawless and consistent user experience whether accessed from a desktop, tablet, or smartphone. Customers can book a table on the go with ease.
 
-   ![Responsive Design](static/readme/images/responsive.JPG)
+   ![Responsive Design](static/images/readme/responsive.JPG)
 
 ### 7. **Digital Menu**
    - **Discover Offerings**: A beautifully presented digital menu allows users to browse the restaurant's culinary offerings, including categories, descriptions, and prices, helping them decide to book a table. While on the backend can be completely be controlled by staff not having to write any code.
 
-   ![Menu](static/readme/images/menu.JPG)
+   ![Menu](static/images/readme/menu.JPG)
 
 
 ### 8. **About Us Page**
    - **Our Story**: This section introduces the restaurant's history, ethos, and team, helping to build a connection with potential customers before they even step through the door.
 
-   ![About](static/readme/images/about.JPG)
+   ![About](static/images/readme/about.JPG)
 
 
 ### 9. **Contact Page**
    - **Get in Touch**: Provides essential contact information such as the restaurant's address, phone number, and operating hours. It also often includes a contact form for direct inquiries that aren't covered by reservations.
 
-   ![Contact](static/readme/images/contact.JPG)
+   ![Contact](static/images/readme/contact.JPG)
 
 ---
 
