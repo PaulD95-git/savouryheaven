@@ -74,7 +74,7 @@
         
         <div class="menu-preview-tabs">
             <div class="tab-buttons">
-                {% for category in menu_categories %}
+                {% for category in categories %}
                 <button class="tab-button {% if forloop.first %}active{% endif %}" data-category="{{ category.id }}">
                     {{ category.name }}
                 </button>
@@ -82,10 +82,10 @@
             </div>
             
             <div class="tab-content">
-                {% for category in menu_categories %}
+                {% for category in categories %}
                 <div class="tab-pane {% if forloop.first %}active{% endif %}" id="category-{{ category.id }}">
                     <div class="menu-preview-grid">
-                        {% for item in category.featured_items %}
+                        {% for item in category.available_items|slice:":4" %}
                         <div class="menu-preview-card">
                             <div class="menu-preview-image">
                                 {% if item.image %}
@@ -241,24 +241,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Tab functionality for menu preview
-document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.classList.remove('active');
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const categoryId = this.getAttribute('data-category');
+            
+            // Update active button
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update active tab pane
+            tabPanes.forEach(pane => {
+                pane.classList.remove('active');
+                if (pane.id === 'category-' + categoryId) {
+                    pane.classList.add('active');
+                }
+            });
         });
-        
-        // Add active class to clicked button
-        button.classList.add('active');
-        
-        // Hide all tab panes
-        document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
-        });
-        
-        // Show the selected tab pane
-        const categoryId = button.getAttribute('data-category');
-        document.getElementById(`category-${categoryId}`).classList.add('active');
     });
 });
 </script>

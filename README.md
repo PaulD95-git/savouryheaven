@@ -21,7 +21,8 @@
 
 ## Project Overview
 
-The **Reservation System** is a dynamic, user-friendly web application designed to handle reservations for different types of services, including restaurants, hotels, and event venues. The system offers users the ability to make, view, and cancel reservations while also allowing admins to manage and monitor all reservations and users.
+Savoury Heaven is a sophisticated restaurant website featuring an online booking system and digital menu. The platform provides customers with an elegant way to explore our culinary offerings, make reservations, and experience fine dining from the comfort of their homes before even visiting our physical location.
+
 
 ---
 
@@ -73,7 +74,7 @@ The **Reservation System** is a dynamic, user-friendly web application designed 
    ![Responsive Design](staticfiles/restaurant/images/booking-table.png)
 
 ### 7. **Digital Menu**
-   - **Discover Offerings**: A beautifully presented digital menu allows users to browse the restaurant's culinary offerings, including categories, descriptions, and prices, helping them decide to book a table.
+   - **Discover Offerings**: A beautifully presented digital menu allows users to browse the restaurant's culinary offerings, including categories, descriptions, and prices, helping them decide to book a table. While on the backend can be completely be controlled by staff not having to write any code.
 
    ![Menu](staticfiles/restaurant/images/menu.JPG)
 
