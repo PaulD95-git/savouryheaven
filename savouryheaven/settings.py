@@ -1,6 +1,5 @@
 """
 Django settings for savouryheaven project.
-
 """
 
 from pathlib import Path
@@ -43,8 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',  # Cloudinary storage
     'django.contrib.staticfiles',
-    'django.contrib.sites',  # Required for allauth
+    'django.contrib.sites',
+    'cloudinary',  # Cloudinary
 
     # Custom apps
     'reservations',
@@ -53,7 +54,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
 ]
 
 # -------------------------------------------------------------------
@@ -199,11 +199,24 @@ else:
     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+# -------------------------------------------------------------------
+# CLOUDINARY CONFIGURATION
+# -------------------------------------------------------------------
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+# Use Cloudinary for media files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # -------------------------------------------------------------------
 # MEDIA FILES
 # -------------------------------------------------------------------
 
+# These are now handled by Cloudinary, but keeping for reference
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
+from cloudinary.models import CloudinaryField
 
 
 class TimeSlot(models.Model):
@@ -123,10 +124,10 @@ class MenuItem(models.Model):
     is_available = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)
-    image = models.ImageField(
-        upload_to='menu_images/',
-        blank=True,
-        null=True
+    image = CloudinaryField(
+        'image',
+        folder='menu_items',
+        blank=True, null=True
     )
     ingredients = models.TextField(blank=True)
     calories = models.PositiveIntegerField(blank=True, null=True)
