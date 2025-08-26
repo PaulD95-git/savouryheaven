@@ -65,62 +65,61 @@ document.addEventListener('DOMContentLoaded', function() {
      * @returns {boolean} True if the time slot is in the past
      */
     function isTimeSlotInPast(slotTime, selectedDate) {
-        const today = new Date();
-        const selectedDateObj = new Date(selectedDate);
-        
-        // If the selected date is not today, no slots are in the past
-        if (selectedDateObj.toDateString() !== today.toDateString()) {
+    const now = new Date();
+    const selectedDateObj = new Date(selectedDate);
+    
+    // If selected date is not today, no slots are in the past
+    if (selectedDateObj.toDateString() !== now.toDateString()) {
+        return false;
+    }
+    
+    // Parse the slot time
+    let hours, minutes;
+    
+    if (slotTime.includes('PM') || slotTime.includes('AM')) {
+        // 12-hour format (e.g., "6:30 PM", "12:00 AM", "12:30 PM")
+        const parts = slotTime.trim().split(' ');
+        if (parts.length !== 2) {
+            console.error('Unexpected time format:', slotTime);
             return false;
         }
         
-        // Parse the slot time (assuming format like "18:30" or "6:30 PM")
-        const currentTime = today.getHours() * 60 + today.getMinutes(); // Current time in minutes
-        
-        let slotTimeInMinutes;
-        
-        // Handle different time formats
-        if (slotTime.includes('PM') || slotTime.includes('AM')) {
-            // 12-hour format (e.g., "6:30 PM", "12:00 AM", "12:30 PM")
-            const parts = slotTime.trim().split(' ');
-            if (parts.length !== 2) {
-                console.error('Unexpected time format:', slotTime);
-                return false;
-            }
-            
-            const [time, period] = parts;
-            const timeParts = time.split(':');
-            if (timeParts.length !== 2) {
-                console.error('Unexpected time part format:', time);
-                return false;
-            }
-            
-            const [hours, minutes] = timeParts.map(Number);
-            let hour24 = hours;
-            
-            if (period === 'PM' && hours !== 12) {
-                // PM times except 12 PM: add 12 hours
-                hour24 += 12;
-            } else if (period === 'AM' && hours === 12) {
-                // 12 AM (midnight): This is tomorrow's midnight, so add 24 hours
-                hour24 = 24;
-            }
-            
-            slotTimeInMinutes = hour24 * 60 + minutes;
-        } else {
-            // 24-hour format (e.g., "18:30")
-            const [hours, minutes] = slotTime.split(':').map(Number);
-            
-            // If it's 00:00 (midnight in 24h format), treat it as tomorrow (24:00)
-            if (hours === 0) {
-                slotTimeInMinutes = 24 * 60 + minutes;
-            } else {
-                slotTimeInMinutes = hours * 60 + minutes;
-            }
+        const [time, period] = parts;
+        const timeParts = time.split(':');
+        if (timeParts.length !== 2) {
+            console.error('Unexpected time part format:', time);
+            return false;
         }
         
-        // Add a buffer to prevent booking slots too close to current time
-        const bufferMinutes = 30;
-        return slotTimeInMinutes <= (currentTime + bufferMinutes);
+        [hours, minutes] = timeParts.map(Number);
+        
+        // Convert 12-hour to 24-hour format
+        if (period === 'PM') {
+            if (hours !== 12) {
+                hours += 12;
+            }
+            // 12 PM stays as 12 (noon)
+        } else if (period === 'AM') {
+            if (hours === 12) {
+                hours = 0; // 12 AM becomes 0:00 (midnight)
+            }
+
+        }
+    } else {
+        // 24-hour format (e.g., "18:30")
+        const timeParts = slotTime.split(':');
+        [hours, minutes] = timeParts.map(Number);
+    }
+    
+    // Create the slot time as a Date object
+    const slotDateTime = new Date(selectedDate);
+    slotDateTime.setHours(hours, minutes, 0, 0);
+    
+    // Add buffer (30 minutes) - no booking within 30 mins
+    const bufferMs = 30 * 60 * 1000;
+    const currentTimeWithBuffer = now.getTime() + bufferMs;
+    
+    return slotDateTime.getTime() < currentTimeWithBuffer;
     }
 
     /* ============================================= */
