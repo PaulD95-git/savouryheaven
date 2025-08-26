@@ -41,7 +41,7 @@ class MenuItemInline(admin.TabularInline):
                     'style="object-fit: cover;" />'.format(image_url)
                 )
             except Exception as e:
-                return f"Error: {str(e)}"
+                return "Error: {}".format(str(e))
         return "No Image"
 
     image_preview.short_description = 'Preview'
@@ -71,23 +71,16 @@ class MenuItemAdmin(admin.ModelAdmin):
     readonly_fields = ('image_preview',)
 
     def image_preview(self, obj):
-        if obj.image and obj.image.name:
+        if obj.image:
             try:
+                # For CloudinaryField, just convert to string to get the URL
+                image_url = str(obj.image)
                 return mark_safe(
-                    (
-                        '<img src="{}" style="width: 100px; height: auto;" />'
-                    ).format(obj.image.url)
+                    '<img src="{}" style="width: 100px; height: auto;" />'
+                    .format(image_url)
                 )
-            except Exception:
-                # Fallback: check if file exists physically
-                if os.path.exists(obj.image.path):
-                    return mark_safe(
-                        (
-                            '<img src="/media/{}" '
-                            'style="width: 100px; height: auto;" />'
-                        ).format(obj.image.name)
-                    )
-                return "Image file missing"
+            except Exception as e:
+                return "Error: {}".format(str(e))
         return "No Image"
 
     image_preview.short_description = 'Image Preview'
