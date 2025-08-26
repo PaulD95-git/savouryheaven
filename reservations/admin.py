@@ -32,16 +32,16 @@ class MenuItemInline(admin.TabularInline):
     readonly_fields = ('image_preview',)
 
     def image_preview(self, obj):
-        if obj.image and obj.image.name:
+        if obj.image:
             try:
+                # Convert to string to get the URL (works for CloudinaryField)
+                image_url = str(obj.image)
                 return mark_safe(
-                    (
-                        '<img src="{}" '
-                        'style="width: 50px; height: auto;" />'
-                    ).format(obj.image.url)
+                    '<img src="{}" width="50" height="50" '
+                    'style="object-fit: cover;" />'.format(image_url)
                 )
-            except Exception:
-                return "Image file missing"
+            except Exception as e:
+                return f"Error: {str(e)}"
         return "No Image"
 
     image_preview.short_description = 'Preview'
