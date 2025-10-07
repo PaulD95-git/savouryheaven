@@ -80,12 +80,21 @@ The design prioritizes **elegance**, **simplicity**, and **accessibility** to re
 ### Wireframes & Mockups
 
 #### Booking Flow Wireframe
-![Booking Flow](reservations/static/images/readme/responsive_mockup.jpeg)
-*Initial wireframe showing the step-by-step booking process*
+![Hand-Drawn Booking Wireframe](reservations/static/images/readme/responsive_mockup.jpeg)
+*Initial hand-drawn wireframe showing booking form layout and user flow*
 
-#### Responsive Design
-![Mobile View](reservations/static/images/readme/booking_mockup.jpeg)
-*Mobile-first responsive design across devices*
+![Hand-Drawn Navigation Wireframe](reservations/static/images/readme/booking_mockup.jpeg)  
+*Hand-drawn responsive navigation concepts showing mobile and desktop layouts*
+
+### Design Process Documentation
+
+**Hand-Drawn Wireframes Rationale**:
+- **Low-Fidelity Start**: Began with pencil and paper to quickly iterate on layout concepts without technical constraints
+- **User Flow Focus**: Concentrated on intuitive navigation paths before visual design
+- **Responsive Planning**: Sketched multiple device sizes to ensure mobile-first approach
+- **Rapid Iteration**: Easy to modify and test different layout options before implementation
+
+**From Sketch to Implementation**: These initial concepts evolved into the final responsive design while maintaining the core user experience principles established in the wireframes.
 
 ### Color Scheme & Typography
 
