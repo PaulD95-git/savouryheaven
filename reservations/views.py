@@ -12,27 +12,38 @@ from django.db import models
 from django.views.generic import TemplateView
 
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 def index(request):
     try:
-        # Simplified approach - get categories first, then featured items
-        categories = MenuCategory.objects.all()
+        logger.info("Index view started")  # This will appear in logs
         
-        # Manually get featured items for each category
-        for category in categories:
-            category.featured_items = category.menu_items.filter(
-                is_available=True,
-                is_featured=True
-            )[:3]
+        # Get categories with their featured menu items
+        categories = MenuCategory.objects.prefetch_related(
+            models.Prefetch(
+                'menu_items',
+                queryset=MenuItem.objects.filter(
+                    is_available=True,
+                    is_featured=True
+                )[:3],
+                to_attr='featured_items'
+            )
+        ).all()
 
+        logger.info(f"Found {len(categories)} categories")
+        
         context = {
             'menu_categories': categories,
         }
         return render(request, 'index.html', context)
         
     except Exception as e:
-        import logging
-        logger = logging.getLogger(__name__)
-        logger.error(f"Error in index view: {str(e)}", exc_info=True)
+        # This will log the error even when DEBUG=False
+        logger.error(f"CRITICAL ERROR in index view: {str(e)}", exc_info=True)
+        
+        # Return a safe fallback
         return render(request, 'index.html', {'menu_categories': []})
 
 
