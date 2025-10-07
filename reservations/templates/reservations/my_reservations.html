@@ -5,9 +5,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/reservations/my_reservations.css' %}">
-<script src="{% static 'js/reservations/my_reservations.js' %}"></script>
-
-
 
 <!-- Hero Section -->
 <section class="reservations-hero">
@@ -148,5 +145,75 @@
         </div>
     </div>
 </div>
+
+<!-- Debug and JavaScript -->
+<script>
+console.log('🔄 Template script loading...');
+
+// Define functions globally first
+function showCancelModal(reservationId, date, time) {
+    console.log('✅ showCancelModal called with:', reservationId, date, time);
+    
+    const modalDate = document.getElementById('modalDate');
+    const modalTime = document.getElementById('modalTime');
+    const cancelForm = document.getElementById('cancelForm');
+    const modal = document.getElementById('cancelModal');
+    
+    if (!modalDate || !modalTime || !cancelForm || !modal) {
+        console.error('❌ Modal elements missing!');
+        return;
+    }
+    
+    modalDate.textContent = date;
+    modalTime.textContent = time;
+    cancelForm.action = `/cancel-reservation/${reservationId}/`;
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function hideCancelModal() {
+    const modal = document.getElementById('cancelModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Test if functions are available
+console.log('✅ showCancelModal defined:', typeof showCancelModal);
+console.log('✅ hideCancelModal defined:', typeof hideCancelModal);
+
+// Add event listeners when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DOM loaded - testing modal elements');
+    
+    // Test if modal elements exist
+    console.log('📝 Modal element:', document.getElementById('cancelModal'));
+    console.log('📝 Cancel buttons:', document.querySelectorAll('.btn-cancel').length);
+    
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+        if (event.target.id === 'cancelModal') {
+            hideCancelModal();
+        }
+    });
+    
+    // Close with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            hideCancelModal();
+        }
+    });
+});
+
+// Test manual function call
+window.testModal = function() {
+    console.log('🧪 Testing modal manually');
+    showCancelModal(999, 'October 10, 2025', '7:30 PM');
+};
+</script>
+
+<!-- Load external JS after defining functions -->
+<script src="{% static 'js/reservations/my_reservations.js' %}"></script>
 
 {% endblock %}
