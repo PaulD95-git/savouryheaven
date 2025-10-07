@@ -83,10 +83,8 @@ def reservation_view(request):
                     # Calculate remaining spots and show error message
                     remaining = max_capacity - total_booked_guests
                     error_msg = (
-                        f'Only {remaining} guest spots left in this time.'
-                        (
-                            'Please choose another time or reduce your party.'
-                        )
+                        f'Only {remaining} guest spots left in this time. '
+                        'Please choose another time or reduce your party.'
                     )
                     messages.error(request, error_msg)
 
