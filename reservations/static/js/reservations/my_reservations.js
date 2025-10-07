@@ -28,10 +28,15 @@ document.querySelectorAll('.fade-in-delay').forEach(element => {
 
 // Modal functionality
 function showCancelModal(reservationId, date, time) {
+    console.log('Showing modal for reservation:', reservationId);
+    
     document.getElementById('modalDate').textContent = date;
     document.getElementById('modalTime').textContent = time;
-    // Set the form action to the correct cancel URL
-    document.getElementById('cancelForm').action = "{% url 'cancel_reservation' 0 %}".replace('0', reservationId);
+    
+    // Build URL correctly
+    const cancelUrl = `/cancel-reservation/${reservationId}/`;
+    document.getElementById('cancelForm').action = cancelUrl;
+    
     document.getElementById('cancelModal').style.display = 'block';
 }
 
