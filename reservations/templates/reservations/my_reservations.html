@@ -137,80 +137,61 @@
             <p><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-actions">
-            <form id="cancelForm" method="post" action="">
-                {% csrf_token %}
-                <button type="submit" class="btn-confirm">Yes, Cancel Reservation</button>
-            </form>
+            <!-- Remove the form and use a button that triggers AJAX -->
+            <button type="button" class="btn-confirm" onclick="confirmCancel()">Yes, Cancel Reservation</button>
             <button type="button" class="btn-modal-cancel" onclick="hideCancelModal()">Keep Reservation</button>
         </div>
     </div>
 </div>
 
-<!-- Debug and JavaScript -->
 <script>
-console.log('🔄 Template script loading...');
+let currentReservationId = null;
 
-// Define functions globally first
 function showCancelModal(reservationId, date, time) {
     console.log('✅ showCancelModal called with:', reservationId, date, time);
+    currentReservationId = reservationId;
     
-    const modalDate = document.getElementById('modalDate');
-    const modalTime = document.getElementById('modalTime');
-    const cancelForm = document.getElementById('cancelForm');
-    const modal = document.getElementById('cancelModal');
-    
-    if (!modalDate || !modalTime || !cancelForm || !modal) {
-        console.error('❌ Modal elements missing!');
-        return;
-    }
-    
-    modalDate.textContent = date;
-    modalTime.textContent = time;
-    cancelForm.action = `/cancel-reservation/${reservationId}/`;
-    modal.style.display = 'block';
+    document.getElementById('modalDate').textContent = date;
+    document.getElementById('modalTime').textContent = time;
+    document.getElementById('cancelModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
 
-function hideCancelModal() {
-    const modal = document.getElementById('cancelModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+function confirmCancel() {
+    if (!currentReservationId) return;
+    
+    console.log('🔔 Confirming cancellation for:', currentReservationId);
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Send AJAX request
+    fetch(`/cancel-reservation/${currentReservationId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `reservation_id=${currentReservationId}`
+    })
+    .then(response => {
+        if (response.ok) {
+            // Success - reload page to see updated reservations
+            window.location.reload();
+        } else {
+            // Handle error
+            console.error('❌ Cancellation failed:', response.status);
+            alert('Failed to cancel reservation. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('❌ Cancellation error:', error);
+        alert('Error cancelling reservation. Please try again.');
+    })
+    .finally(() => {
+        hideCancelModal();
+    });
 }
-
-// Test if functions are available
-console.log('✅ showCancelModal defined:', typeof showCancelModal);
-console.log('✅ hideCancelModal defined:', typeof hideCancelModal);
-
-// Add event listeners when DOM loads
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ DOM loaded - testing modal elements');
-    
-    // Test if modal elements exist
-    console.log('📝 Modal element:', document.getElementById('cancelModal'));
-    console.log('📝 Cancel buttons:', document.querySelectorAll('.btn-cancel').length);
-    
-    // Close modal when clicking outside
-    document.addEventListener('click', function(event) {
-        if (event.target.id === 'cancelModal') {
-            hideCancelModal();
-        }
-    });
-    
-    // Close with Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            hideCancelModal();
-        }
-    });
-});
-
-// Test manual function call
-window.testModal = function() {
-    console.log('🧪 Testing modal manually');
-    showCancelModal(999, 'October 10, 2025', '7:30 PM');
-};
 </script>
 
 <!-- Load external JS after defining functions -->
