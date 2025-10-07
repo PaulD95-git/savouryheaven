@@ -178,7 +178,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Use CompressedStaticFilesStorage instead of CompressedManifestStaticFilesStorage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+# Ignore patterns for WhiteNoise to prevent missing file errors
+WHITENOISE_IGNORE_PATTERNS = [
+    r"cloudinary/",
+    r".*jquery\.ui\.widget.*",
+    r".*\.map$",
+]
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY FIELD TYPE
