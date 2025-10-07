@@ -82,7 +82,6 @@ def reservation_view(request):
                 if total_booked_guests + reservation.guests > max_capacity:
                     # Calculate remaining spots and show error message
                     remaining = max_capacity - total_booked_guests
-                    error_msg = f'Only {remaining} guest spots left in this time. Please choose another time or reduce your party.'
                     messages.error(request, f'Only {remaining} guest spots left in this time. Please choose another time or reduce your party.')
 
                     return render(request, 'reservations/book.html', {
