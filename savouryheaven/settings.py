@@ -26,10 +26,30 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 # Hosts allowed to serve the project
-ALLOWED_HOSTS = ['savouryheaven.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'savouryheaven-15fa27504aa2.herokuapp.com', 
+    'savouryheaven.herokuapp.com', 
+    'localhost', 
+    '127.0.0.1'
+]
 
 # Required by django-allauth
 SITE_ID = 1
+
+# Loggin
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
 
 # -------------------------------------------------------------------
 # APPLICATIONS
