@@ -14,7 +14,7 @@ from django.views.generic import TemplateView
 
 def index(request):
     try:
-        # Simplified query - just get categories
+        # Simplified approach - get categories first, then featured items
         categories = MenuCategory.objects.all()
         
         # Manually get featured items for each category
@@ -30,7 +30,9 @@ def index(request):
         return render(request, 'index.html', context)
         
     except Exception as e:
-        # Safe fallback
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error in index view: {str(e)}", exc_info=True)
         return render(request, 'index.html', {'menu_categories': []})
 
 
