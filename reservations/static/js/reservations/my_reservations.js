@@ -4,70 +4,88 @@ class ReservationManager {
         this.currentReservationId = null;
         this.cancelForm = document.getElementById('cancelForm');
         this.confirmBtn = document.getElementById('confirmCancelBtn');
+        this.modal = document.getElementById('cancelModal');
+        this.closeBtn = document.getElementById('closeModal');
+        this.keepBtn = document.getElementById('keepReservationBtn');
         this.init();
     }
 
     init() {
         this.bindEvents();
         this.setupModalHandlers();
+        this.addSpinnerStyles();
     }
 
     bindEvents() {
-        // Bind cancel buttons
-        document.querySelectorAll('.btn-cancel').forEach(button => {
-            button.addEventListener('click', (e) => {
-                this.showCancelModal(e.target);
-            });
+        // Bind cancel buttons using event delegation
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-cancel') || e.target.closest('.btn-cancel')) {
+                const button = e.target.classList.contains('btn-cancel') ? e.target : e.target.closest('.btn-cancel');
+                this.showCancelModal(button);
+            }
         });
-
-        // Bind form submission
-        if (this.cancelForm) {
-            this.cancelForm.addEventListener('submit', (e) => {
-                this.handleFormSubmission(e);
-            });
-        }
     }
 
     setupModalHandlers() {
+        // Close modal events
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.hideCancelModal());
+        }
+        
+        if (this.keepBtn) {
+            this.keepBtn.addEventListener('click', () => this.hideCancelModal());
+        }
+
         // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('cancelModal');
-            if (e.target === modal) {
-                this.hideCancelModal();
-            }
-        });
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.hideCancelModal();
+                }
+            });
+        }
 
         // Escape key to close modal
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
+            if (e.key === 'Escape' && this.modal.style.display === 'block') {
                 this.hideCancelModal();
             }
         });
+
+        // Form submission
+        if (this.cancelForm) {
+            this.cancelForm.addEventListener('submit', (e) => this.handleFormSubmission(e));
+        }
     }
 
     showCancelModal(button) {
+        console.log('Show modal called with:', button);
+        
         this.currentReservationId = button.getAttribute('data-reservation-id');
         const date = button.getAttribute('data-reservation-date');
         const time = button.getAttribute('data-reservation-time');
+        
+        console.log('Reservation ID:', this.currentReservationId, 'Date:', date, 'Time:', time);
+        
+        if (!this.currentReservationId) {
+            console.error('No reservation ID found on button');
+            return;
+        }
         
         // Set modal content
         document.getElementById('modalDate').textContent = date;
         document.getElementById('modalTime').textContent = time;
         
-        // Set form action URL
-        this.cancelForm.action = `/cancel-reservation/${this.currentReservationId}/`;
-        
         // Show modal
-        const modal = document.getElementById('cancelModal');
-        modal.style.display = 'block';
+        this.modal.style.display = 'block';
         
         // Reset confirm button state
         this.resetConfirmButton();
     }
 
     hideCancelModal() {
-        const modal = document.getElementById('cancelModal');
-        modal.style.display = 'none';
+        console.log('Hide modal called');
+        this.modal.style.display = 'none';
         this.currentReservationId = null;
         this.resetConfirmButton();
     }
@@ -75,60 +93,65 @@ class ReservationManager {
     handleFormSubmission(e) {
         e.preventDefault();
         
+        console.log('Form submission, current ID:', this.currentReservationId);
+        
         if (!this.currentReservationId) {
-            console.error('No reservation ID selected');
+            console.error('No reservation ID selected for cancellation');
+            alert('No reservation selected. Please try again.');
             return;
         }
 
         // Show loading state
         this.setLoadingState();
 
-        // Submit the form
+        // Submit the cancellation via fetch
         this.submitCancellation();
     }
 
     setLoadingState() {
-        this.confirmBtn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Cancelling...';
-        this.confirmBtn.disabled = true;
+        if (this.confirmBtn) {
+            this.confirmBtn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Cancelling...';
+            this.confirmBtn.disabled = true;
+        }
         
         // Disable cancel button too
-        const cancelBtn = document.querySelector('.btn-modal-cancel');
-        cancelBtn.disabled = true;
+        if (this.keepBtn) {
+            this.keepBtn.disabled = true;
+        }
     }
 
     resetConfirmButton() {
-        this.confirmBtn.innerHTML = '<i class="bi bi-check-lg"></i> Yes, Cancel Reservation';
-        this.confirmBtn.disabled = false;
+        if (this.confirmBtn) {
+            this.confirmBtn.innerHTML = '<i class="bi bi-check-lg"></i> Yes, Cancel Reservation';
+            this.confirmBtn.disabled = false;
+        }
         
         // Re-enable cancel button
-        const cancelBtn = document.querySelector('.btn-modal-cancel');
-        cancelBtn.disabled = false;
+        if (this.keepBtn) {
+            this.keepBtn.disabled = false;
+        }
     }
 
     submitCancellation() {
-        // Create a fetch request to submit the form
-        const formData = new FormData(this.cancelForm);
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const url = `/cancel-reservation/${this.currentReservationId}/`;
         
-        fetch(this.cancelForm.action, {
+        console.log('Submitting cancellation to:', url);
+        
+        fetch(url, {
             method: 'POST',
-            body: formData,
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
         })
         .then(response => {
-            if (response.redirected) {
-                // If redirected, follow the redirect
-                window.location.href = response.url;
+            console.log('Response status:', response.status);
+            if (response.ok) {
+                // Success - reload the page to show updated status
+                window.location.reload();
             } else {
-                return response.json().then(data => {
-                    if (data.success) {
-                        // Reload the page to show updated reservation status
-                        window.location.reload();
-                    } else {
-                        throw new Error(data.error || 'Cancellation failed');
-                    }
-                });
+                throw new Error(`Cancellation failed with status: ${response.status}`);
             }
         })
         .catch(error => {
@@ -137,64 +160,50 @@ class ReservationManager {
             this.resetConfirmButton();
         });
     }
-}
 
-// CSS for spinning animation
-const style = document.createElement('style');
-style.textContent = `
-    .spin {
-        animation: spin 1s linear infinite;
+    showError(message) {
+        alert(message);
     }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+
+    addSpinnerStyles() {
+        if (!document.getElementById('reservation-spinner-styles')) {
+            const style = document.createElement('style');
+            style.id = 'reservation-spinner-styles';
+            style.textContent = `
+                .spin {
+                    animation: spin 1s linear infinite;
+                    display: inline-block;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                
+                .modal-actions .btn-confirm:disabled,
+                .modal-actions .btn-modal-cancel:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none !important;
+                }
+                
+                .modal {
+                    display: none;
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
-    
-    .modal-actions .btn-confirm:disabled,
-    .modal-actions .btn-modal-cancel:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none !important;
-    }
-    
-    .messages-container {
-        margin-bottom: 2rem;
-    }
-    
-    .alert {
-        border-radius: 12px;
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        background: rgba(99, 50, 68, 0.3);
-        color: var(--cream);
-    }
-    
-    .alert-success {
-        border-color: rgba(76, 175, 80, 0.3);
-    }
-    
-    .alert-danger {
-        border-color: rgba(244, 67, 54, 0.3);
-    }
-`;
-document.head.appendChild(style);
+}
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Initializing ReservationManager...');
     new ReservationManager();
     
     // Add smooth animations for page elements
     const cards = document.querySelectorAll('.reservation-card');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Auto-dismiss alerts after 5 seconds
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        }, 5000);
     });
 });

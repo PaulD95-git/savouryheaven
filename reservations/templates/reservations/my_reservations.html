@@ -98,7 +98,10 @@
                                         <i class="bi bi-pencil"></i>
                                         Edit
                                     </a>
-                                    <button type="button" class="btn-cancel" onclick="showCancelModal({{ reservation.id }}, '{{ reservation.date|date:"F j, Y" }}', '{{ reservation.time_slot.display_name }}')">
+                                    <button type="button" class="btn-cancel" 
+                                            data-reservation-id="{{ reservation.id }}"
+                                            data-reservation-date="{{ reservation.date|date:'F j, Y' }}"
+                                            data-reservation-time="{{ reservation.time_slot.display_name }}">
                                         <i class="bi bi-x-lg"></i>
                                         Cancel
                                     </button>
@@ -130,17 +133,23 @@
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Cancel Reservation</h4>
-            <span class="close" onclick="hideCancelModal()">&times;</span>
+            <span class="close" id="closeModal">&times;</span>
         </div>
         <div class="modal-body">
             <p>Are you sure you want to cancel your reservation for <strong id="modalDate"></strong> at <strong id="modalTime"></strong>?</p>
             <p><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-actions">
-            <form id="cancelForm" method="post" action="">
+            <form id="cancelForm" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn-confirm">Yes, Cancel Reservation</button>
-                <button type="button" class="btn-modal-cancel" onclick="hideCancelModal()">Keep Reservation</button>
+                <button type="submit" class="btn-confirm" id="confirmCancelBtn">
+                    <i class="bi bi-check-lg"></i>
+                    Yes, Cancel Reservation
+                </button>
+                <button type="button" class="btn-modal-cancel" id="keepReservationBtn">
+                    <i class="bi bi-x-lg"></i>
+                    Keep Reservation
+                </button>
             </form>
         </div>
     </div>
