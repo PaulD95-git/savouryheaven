@@ -137,14 +137,13 @@
             <p><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-actions">
-            <!-- Remove the form and use a button that triggers AJAX -->
             <button type="button" class="btn-confirm" onclick="confirmCancel()">Yes, Cancel Reservation</button>
             <button type="button" class="btn-modal-cancel" onclick="hideCancelModal()">Keep Reservation</button>
         </div>
     </div>
 </div>
 
-<!-- Load external JS after defining functions -->
+<!-- Load JavaScript -->
 <script src="{% static 'js/reservations/my_reservations.js' %}"></script>
 
 {% endblock %}

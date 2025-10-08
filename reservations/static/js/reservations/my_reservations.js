@@ -1,12 +1,16 @@
 // my_reservations.js
 let currentReservationId = null;
 
+// Modal Functions
 function showCancelModal(reservationId, date, time) {
     console.log('✅ showCancelModal called with:', reservationId, date, time);
     currentReservationId = reservationId;
     
+    // Update modal content
     document.getElementById('modalDate').textContent = date;
     document.getElementById('modalTime').textContent = time;
+    
+    // Show modal
     document.getElementById('cancelModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
 }
@@ -18,12 +22,21 @@ function hideCancelModal() {
 }
 
 function confirmCancel() {
-    if (!currentReservationId) return;
+    if (!currentReservationId) {
+        console.error('❌ No reservation ID found');
+        return;
+    }
     
     console.log('🔔 Confirming cancellation for:', currentReservationId);
     
     // Get CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfToken = getCSRFToken();
+    
+    if (!csrfToken) {
+        console.error('❌ CSRF token not found');
+        alert('Security error. Please refresh the page and try again.');
+        return;
+    }
     
     // Send AJAX request
     fetch(`/cancel-reservation/${currentReservationId}/`, {
@@ -36,6 +49,8 @@ function confirmCancel() {
     })
     .then(response => {
         if (response.ok) {
+            console.log('✅ Reservation cancelled successfully');
+            // Success - reload page to see updated reservations
             window.location.reload();
         } else {
             console.error('❌ Cancellation failed:', response.status);
@@ -51,10 +66,37 @@ function confirmCancel() {
     });
 }
 
-// Animation handling
+// Helper function to get CSRF token
+function getCSRFToken() {
+    const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (csrfInput) {
+        return csrfInput.value;
+    }
+    
+    // Alternative: check for CSRF token in cookies
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+    
+    return cookieValue || null;
+}
+
+// Close modal when clicking outside
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📁 External JS loaded');
     
+    // Close modal when clicking outside content
+    const modal = document.getElementById('cancelModal');
+    if (modal) {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                hideCancelModal();
+            }
+        });
+    }
+    
+    // Animation handling
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
