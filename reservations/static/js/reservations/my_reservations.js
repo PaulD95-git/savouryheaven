@@ -1,7 +1,6 @@
 // my_reservations.js
 let currentReservationId = null;
 
-// Modal Functions
 function showCancelModal(reservationId, date, time) {
     console.log('✅ showCancelModal called with:', reservationId, date, time);
     currentReservationId = reservationId;
@@ -50,7 +49,6 @@ function confirmCancel() {
     .then(response => {
         if (response.ok) {
             console.log('✅ Reservation cancelled successfully');
-            // Success - reload page to see updated reservations
             window.location.reload();
         } else {
             console.error('❌ Cancellation failed:', response.status);
@@ -66,14 +64,12 @@ function confirmCancel() {
     });
 }
 
-// Helper function to get CSRF token
 function getCSRFToken() {
     const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
     if (csrfInput) {
         return csrfInput.value;
     }
     
-    // Alternative: check for CSRF token in cookies
     const cookieValue = document.cookie
         .split('; ')
         .find(row => row.startsWith('csrftoken='))
@@ -82,11 +78,11 @@ function getCSRFToken() {
     return cookieValue || null;
 }
 
-// Close modal when clicking outside
+// Animation handling only
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📁 External JS loaded');
     
-    // Close modal when clicking outside content
+    // Close modal when clicking outside
     const modal = document.getElementById('cancelModal');
     if (modal) {
         modal.addEventListener('click', function(event) {
@@ -96,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Animation handling
+    // Animation code
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
