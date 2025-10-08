@@ -1,8 +1,60 @@
-// Only handle animations - modal functions are now in template
+// my_reservations.js
+let currentReservationId = null;
+
+function showCancelModal(reservationId, date, time) {
+    console.log('✅ showCancelModal called with:', reservationId, date, time);
+    currentReservationId = reservationId;
+    
+    document.getElementById('modalDate').textContent = date;
+    document.getElementById('modalTime').textContent = time;
+    document.getElementById('cancelModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function hideCancelModal() {
+    document.getElementById('cancelModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    currentReservationId = null;
+}
+
+function confirmCancel() {
+    if (!currentReservationId) return;
+    
+    console.log('🔔 Confirming cancellation for:', currentReservationId);
+    
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    // Send AJAX request
+    fetch(`/cancel-reservation/${currentReservationId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `reservation_id=${currentReservationId}`
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.error('❌ Cancellation failed:', response.status);
+            alert('Failed to cancel reservation. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('❌ Cancellation error:', error);
+        alert('Error cancelling reservation. Please try again.');
+    })
+    .finally(() => {
+        hideCancelModal();
+    });
+}
+
+// Animation handling
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📁 External JS loaded');
     
-    // Intersection Observer for fade-in animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'

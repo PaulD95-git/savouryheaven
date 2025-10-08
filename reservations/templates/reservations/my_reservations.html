@@ -144,56 +144,6 @@
     </div>
 </div>
 
-<script>
-let currentReservationId = null;
-
-function showCancelModal(reservationId, date, time) {
-    console.log('✅ showCancelModal called with:', reservationId, date, time);
-    currentReservationId = reservationId;
-    
-    document.getElementById('modalDate').textContent = date;
-    document.getElementById('modalTime').textContent = time;
-    document.getElementById('cancelModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function confirmCancel() {
-    if (!currentReservationId) return;
-    
-    console.log('🔔 Confirming cancellation for:', currentReservationId);
-    
-    // Get CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
-    // Send AJAX request
-    fetch(`/cancel-reservation/${currentReservationId}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `reservation_id=${currentReservationId}`
-    })
-    .then(response => {
-        if (response.ok) {
-            // Success - reload page to see updated reservations
-            window.location.reload();
-        } else {
-            // Handle error
-            console.error('❌ Cancellation failed:', response.status);
-            alert('Failed to cancel reservation. Please try again.');
-        }
-    })
-    .catch(error => {
-        console.error('❌ Cancellation error:', error);
-        alert('Error cancelling reservation. Please try again.');
-    })
-    .finally(() => {
-        hideCancelModal();
-    });
-}
-</script>
-
 <!-- Load external JS after defining functions -->
 <script src="{% static 'js/reservations/my_reservations.js' %}"></script>
 
