@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Server Error - Savory Heaven{% endblock %}
+
+{% block content %}
+<div class="container-fluid error-page">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-lg-6 col-md-8 text-center">
+            <!-- Decorative chef icon -->
+            <div class="error-icon mb-4">
+                <i class="bi bi-emoji-frown display-1 text-gold"></i>
+            </div>
+            
+            <!-- Error message -->
+            <h1 class="display-1 fw-bold text-gold mb-3" style="font-family: 'Playfair Display', serif;">500</h1>
+            <h2 class="h1 text-cream mb-4" style="font-family: 'Cinzel', serif;">Kitchen Closed Temporarily</h2>
+            
+            <p class="lead text-cream mb-5" style="font-size: 1.4rem; line-height: 1.6;">
+                Our chefs are experiencing some technical difficulties.<br>
+                Please bear with us while we get everything back in order.
+            </p>
+            
+            <!-- Action buttons -->
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-4 py-2" 
+                   style="background: linear-gradient(135deg, var(--gold), #e6c547); border: none; color: var(--burgundy); font-weight: 600;">
+                    <i class="bi bi-house-door me-2"></i>Return Home
+                </a>
+                <a href="{% url 'contact' %}" class="btn btn-outline-gold btn-lg px-4 py-2"
+                   style="border: 2px solid var(--gold); color: var(--gold); background: transparent;">
+                    <i class="bi bi-telephone me-2"></i>Contact Support
+                </a>
+            </div>
+            
+            <!-- Support information -->
+            <div class="alert alert-warning mt-4 mx-auto" style="max-width: 400px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold); color: var(--cream);">
+                <small>
+                    <i class="bi bi-info-circle me-2"></i>
+                    If this problem persists, please contact our support team.
+                </small>
+            </div>
+            
+            <!-- Decorative element -->
+            <div class="mt-5">
+                <img src="{% static 'images/logo.png' %}" alt="Savory Heaven Logo" height="80" class="opacity-50">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-page {
+    padding-top: 120px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, 
+        rgba(75, 30, 47, 0.95) 0%,
+        rgba(75, 30, 47, 0.85) 100%
+    );
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.text-cream {
+    color: var(--cream) !important;
+}
+
+.btn-outline-gold {
+    border: 2px solid var(--gold) !important;
+    color: var(--gold) !important;
+    background: transparent !important;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background: var(--gold) !important;
+    color: var(--burgundy) !important;
+    transform: translateY(-2px);
+}
+
+.error-icon {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .error-page {
+        padding-top: 100px;
+    }
+    
+    h1.display-1 {
+        font-size: 4rem !important;
+    }
+    
+    .lead {
+        font-size: 1.2rem !important;
+    }
+}
+</style>
+{% endblock %}
