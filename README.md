@@ -299,6 +299,8 @@ This allows seamless switching between development and production databases via 
 
 ### Project Management Tool
 **GitHub Projects** was used for Agile project management, tracking all user stories, tasks, and sprints.
+![Project Board](reservations/static/images/readme/projects.JPG)
+![Agile Board](reservations/static/images/readme/agile_board.JPG)
 
 ### Agile Process
 
