@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found - Savory Heaven{% endblock %}
+
+{% block content %}
+<div class="container-fluid error-page">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-lg-6 col-md-8 text-center">
+            <!-- Decorative food icon -->
+            <div class="error-icon mb-4">
+                <i class="bi bi-egg-fried display-1 text-gold"></i>
+            </div>
+            
+            <!-- Error message -->
+            <h1 class="display-1 fw-bold text-gold mb-3" style="font-family: 'Playfair Display', serif;">404</h1>
+            <h2 class="h1 text-cream mb-4" style="font-family: 'Cinzel', serif;">Page Not Found</h2>
+            
+            <p class="lead text-cream mb-5" style="font-size: 1.4rem; line-height: 1.6;">
+                Oops! It seems this page has left the kitchen.<br>
+                The delicious content you're looking for is no longer on the menu.
+            </p>
+            
+            <!-- Action buttons -->
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-4 py-2" 
+                   style="background: linear-gradient(135deg, var(--gold), #e6c547); border: none; color: var(--burgundy); font-weight: 600;">
+                    <i class="bi bi-house-door me-2"></i>Return Home
+                </a>
+                <a href="{% url 'menu' %}" class="btn btn-outline-gold btn-lg px-4 py-2"
+                   style="border: 2px solid var(--gold); color: var(--gold); background: transparent;">
+                    <i class="bi bi-menu-up me-2"></i>View Menu
+                </a>
+            </div>
+            
+            <!-- Decorative element -->
+            <div class="mt-5">
+                <img src="{% static 'images/logo.png' %}" alt="Savory Heaven Logo" height="80" class="opacity-50">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-page {
+    padding-top: 120px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, 
+        rgba(75, 30, 47, 0.95) 0%,
+        rgba(75, 30, 47, 0.85) 100%
+    );
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.text-cream {
+    color: var(--cream) !important;
+}
+
+.btn-outline-gold {
+    border: 2px solid var(--gold) !important;
+    color: var(--gold) !important;
+    background: transparent !important;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background: var(--gold) !important;
+    color: var(--burgundy) !important;
+    transform: translateY(-2px);
+}
+
+.error-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .error-page {
+        padding-top: 100px;
+    }
+    
+    h1.display-1 {
+        font-size: 4rem !important;
+    }
+    
+    .lead {
+        font-size: 1.2rem !important;
+    }
+}
+</style>
+{% endblock %}
