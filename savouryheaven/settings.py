@@ -206,10 +206,19 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Email authentication settings
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+# Use email for authentication
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+# Email verification (set to 'none' to avoid email sending issues)
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# Prevent issues on signup redirect
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+
+# Auto-login after signup
+ACCOUNT_LOGIN_ON_SIGNUP = True
 
 # -------------------------------------------------------------------
 # CLOUDINARY CONFIGURATION
