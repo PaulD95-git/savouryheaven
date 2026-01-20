@@ -181,12 +181,6 @@
     border: 1px solid rgba(76, 175, 80, 0.3);
 }
 
-.status-cancelled {
-    background: rgba(244, 67, 54, 0.2);
-    color: #F44336;
-    border: 1px solid rgba(244, 67, 54, 0.3);
-}
-
 .reservation-details {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -250,7 +244,7 @@
     z-index: 2;
 }
 
-.btn-edit, .btn-cancel {
+.btn-edit, .btn-delete {
     padding: 10px 20px;
     border-radius: 8px;
     font-size: 0.9rem;
@@ -280,13 +274,13 @@
     text-decoration: none;
 }
 
-.btn-cancel {
+.btn-delete {
     background: rgba(244, 67, 54, 0.2);
     color: #F44336;
     border: 1px solid rgba(244, 67, 54, 0.3);
 }
 
-.btn-cancel:hover {
+.btn-delete:hover {
     background: #F44336;
     color: white;
     transform: translateY(-2px);
@@ -475,7 +469,7 @@
         grid-template-columns: 1fr;
     }
     
-    .btn-edit, .btn-cancel {
+    .btn-edit, .btn-delete {
         font-size: 0.8rem;
         padding: 8px 16px;
     }
