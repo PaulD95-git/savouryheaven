@@ -364,22 +364,24 @@ def edit_reservation(request, reservation_id):
 
 @login_required
 @require_POST
-def cancel_reservation(request, reservation_id):
+def delete_reservation(request, reservation_id):
     reservation = get_object_or_404(
         Reservation,
         id=reservation_id,
         user=request.user
     )
-
-    if not reservation.is_cancelled:
-        reservation.is_cancelled = True
-        reservation.save()
-        messages.success(
-            request,
-            'Your reservation has been cancelled successfully.'
-        )
-    else:
-        messages.warning(request, 'This reservation was already cancelled.')
+    
+    # Store details for the success message before deleting
+    reservation_date = reservation.date.strftime('%B %d, %Y')
+    reservation_time = reservation.time_slot.display_name
+    
+    # Actually delete the reservation from the database
+    reservation.delete()
+    
+    messages.success(
+        request,
+        f'Your reservation for {reservation_date} at {reservation_time} has been deleted successfully.'
+    )
 
     return redirect('my_reservations')
 

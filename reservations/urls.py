@@ -6,7 +6,7 @@ from .views import (
     index,
     my_reservations,
     edit_reservation,
-    cancel_reservation,
+    delete_reservation,  # Changed from cancel_reservation
     edit_profile,
     menu_view,
     about,
@@ -28,9 +28,9 @@ urlpatterns = [
         name='edit_reservation'
     ),
     path(
-        'cancel-reservation/<int:reservation_id>/',
-        cancel_reservation,
-        name='cancel_reservation'
+        'delete-reservation/<int:reservation_id>/',
+        delete_reservation,
+        name='delete_reservation'
     ),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
