@@ -413,6 +413,7 @@ style: Improve mobile responsiveness for booking form
    ![Reservations Dashboard](reservations/static/images/readme/reservations_page.JPG)
    ![Edit Booking](reservations/static/images/readme/edit_booking.JPG)
    ![Cancel Booking](reservations/static/images/readme/cancel_booking.JPG)
+   ![Cancel Modal](reservations/static/images/readme/cancel_modal.JPG)
 
 ### 3. **Secure User Authentication (Login)**
    - **Protected Accounts**: Users can securely log in to their personal accounts using encrypted credentials, ensuring their personal data and reservation history remain private.
@@ -505,7 +506,7 @@ style: Improve mobile responsiveness for booking form
 | **Capacity Check** | Attempt overbooking | 1. Fill booking form for fully booked slot<br>2. Submit | Error message: "Only X spots left", form not submitted | Validation prevents overbooking, error displayed | ✅ Pass |
 | **View Reservations** | See my bookings | 1. Login<br>2. Navigate to My Reservations | All user's reservations displayed, ordered by date | All bookings shown with correct details | ✅ Pass |
 | **Edit Reservation** | Modify existing booking | 1. Go to My Reservations<br>2. Click Edit on a booking<br>3. Change details<br>4. Submit | Reservation updated, success message | Changes saved successfully | ✅ Pass |
-| **Cancel Reservation** | Cancel a booking | 1. Go to My Reservations<br>2. Click Cancel<br>3. Confirm cancellation | Reservation marked as cancelled (not deleted) | Status changed to cancelled in database | ✅ Pass |
+| **Delete Reservation** | Cancel a booking | 1. Go to My Reservations<br>2. Click Delete<br>3. Confirm deletion| Reservation is deleted  | ✅ Pass |
 | **Admin Dashboard** | Admin panel access | 1. Login as superuser<br>2. Navigate to /admin | Access to Django admin, can manage reservations, users, menu | Full admin access granted | ✅ Pass |
 | **Responsive Navbar** | Test mobile menu | 1. Resize browser to mobile width<br>2. Click burger icon | Offcanvas menu opens, burger animates | Menu slides in, burger eyes pop out | ✅ Pass |
 | **Burger Animation** | Hover over burger | 1. On mobile view<br>2. Hover/tap burger icon | Burger wiggles, eyes appear | Animation plays smoothly | ✅ Pass |
@@ -921,17 +922,10 @@ function isTimeSlotInPast(timeString, selectedDate) {
 
 **Root Cause**: The cancel form was using an incorrect URL pattern that didn't match the Django URL configuration. The form action was generating a malformed URL.
 
-**Solution**:
-```html
-<!-- Before (Incorrect) -->
-<form method="POST" action="/cancel/{{ reservation.id }}">
+**Solution**: Replaced is_cancelled status update with reservation.delete() 
+to permanently remove the record from the database. Added a confirmation 
+modal so users must confirm before deletion occurs.
 
-<!-- After (Correct) -->
-<form method="POST" action="{% url 'cancel_reservation' reservation.id %}">
-    {% csrf_token %}
-    <button type="submit">Cancel Reservation</button>
-</form>
-```
 
 **Testing**: Tested cancellation on multiple reservations. All now successfully mark bookings as cancelled with appropriate success messages.
 
@@ -977,6 +971,28 @@ dateInput.setAttribute('min', today);
 ```
 
 **Testing**: Attempted to select past dates in date picker - now disabled and unselectable.
+
+**Status**: ✅ Resolved
+
+### Bug #5: 500 Error on User Sign-Up
+
+**Problem**: When a new user attempted to register an account, a 500 Internal Server Error was encountered after form submission, even though the user account was successfully created in the database.
+
+**Root Cause**: The `ACCOUNT_SIGNUP_REDIRECT_URL` setting in `settings.py` was pointing to a URL that caused a conflict with Django Allauth's post-signup flow, resulting in a server error during the redirect after account creation.
+
+**Solution**:
+```python
+# Before (Incorrect)
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+
+# After (Correct)
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+```
+
+Ensuring `LOGIN_REDIRECT_URL` was correctly set allowed Allauth to handle the post-signup redirect properly without triggering a server error.
+
+**Testing**: Registered multiple new accounts with different email addresses and passwords. All now successfully create an account, auto-login, and redirect to the home page with no errors.
 
 **Status**: ✅ Resolved
 
