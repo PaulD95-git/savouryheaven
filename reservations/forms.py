@@ -12,13 +12,13 @@ class ReservationForm(forms.ModelForm):
         """Form metadata and configuration."""
         model = Reservation
         fields = [
-            'name',        # Customer full name
-            'email',       # Contact email
-            'phone',       # Contact phone number
-            'date',        # Booking date
-            'time_slot',   # Chosen TimeSlot
-            'guests',      # Number of attendees
-            'special_requests'  # Special requirements
+            'name',
+            'email',
+            'phone',
+            'date',
+            'time_slot',
+            'guests',
+            'special_requests'
         ]
         widgets = {
             'date': forms.DateInput(
@@ -43,9 +43,10 @@ class ReservationForm(forms.ModelForm):
         ).order_by('start_time')
 
     def clean_date(self):
-        """Ensure booking date is not in the past."""
+        """Ensure booking date is not in the past (new reservations only)."""
         date = self.cleaned_data.get('date')
-        if date and date < timezone.now().date():
+        # Only validate future date for new reservations, not edits
+        if date and not self.instance.pk and date < timezone.now().date():
             raise ValidationError(
                 "Reservations cannot be made for past dates."
             )
