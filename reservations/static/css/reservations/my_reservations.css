@@ -340,7 +340,7 @@
     text-decoration: none;
 }
 
-/* Modal Styles */
+/* Modal Styles - Add/update these in your CSS file */
 .modal {
     display: none;
     position: fixed;
@@ -351,25 +351,42 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal-content {
-    background: var(--burgundy);
-    margin: 5% auto;
-    padding: 2rem;
+    background: linear-gradient(135deg, #4b1e2f 0%, #633244 100%);
+    margin: 10% auto;
+    padding: 0;
     border-radius: 16px;
     width: 90%;
     max-width: 500px;
-    border: 1px solid var(--gold);
-    position: relative;
+    border: 2px solid var(--gold);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(212, 175, 55, 0.3);
 }
 
@@ -386,6 +403,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: color 0.3s ease;
+    line-height: 1;
 }
 
 .close:hover {
@@ -393,19 +411,39 @@
 }
 
 .modal-body {
+    padding: 2rem;
     color: var(--cream);
+    text-align: center;
+}
+
+.modal-body p {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
     line-height: 1.6;
-    margin-bottom: 2rem;
+}
+
+.modal-body strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.modal-body small {
+    color: rgba(254, 246, 228, 0.6);
+    font-size: 0.9rem;
 }
 
 .modal-actions {
+    padding: 0 2rem 2rem;
+}
+
+.modal-actions form {
     display: flex;
     gap: 1rem;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .btn-confirm, .btn-modal-cancel {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border-radius: 8px;
     font-weight: 600;
     text-transform: uppercase;
@@ -413,27 +451,75 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 200px;
 }
 
 .btn-confirm {
-    background: #F44336;
+    background: linear-gradient(135deg, #dc3545, #c82333);
     color: white;
+    border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
 .btn-confirm:hover {
-    background: #d32f2f;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    background: linear-gradient(135deg, #c82333, #b21f2d);
 }
 
 .btn-modal-cancel {
     background: transparent;
     color: var(--cream);
-    border: 1px solid rgba(254, 246, 228, 0.3);
+    border: 2px solid var(--gold);
 }
 
 .btn-modal-cancel:hover {
-    background: rgba(254, 246, 228, 0.1);
+    background: var(--gold);
+    color: var(--burgundy);
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Responsive modal styles */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 20% auto;
+        width: 95%;
+    }
+    
+    .modal-actions form {
+        flex-direction: column;
+    }
+    
+    .btn-confirm, .btn-modal-cancel {
+        min-width: 100%;
+    }
+    
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-actions {
+        padding: 0 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-title {
+        font-size: 1.25rem;
+    }
+    
+    .modal-body p {
+        font-size: 1rem;
+    }
 }
 
 /* Responsive Design */

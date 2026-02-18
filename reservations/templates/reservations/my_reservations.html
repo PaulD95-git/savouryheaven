@@ -131,19 +131,21 @@
         </div>
         <div class="modal-body">
             <p>Are you sure you want to delete your reservation for <strong id="modalDate"></strong> at <strong id="modalTime"></strong>?</p>
-            <p><small>This action cannot be undone.</small></p>
+            <p><small class="text-muted">This action cannot be undone.</small></p>
         </div>
         <div class="modal-actions">
-            <form id="deleteForm" method="post">
+            <form id="deleteForm" method="post" action="">
                 {% csrf_token %}
-                <button type="submit" class="btn-confirm" id="confirmDeleteBtn">
-                    <i class="bi bi-trash"></i>
-                    Yes, Delete Reservation
-                </button>
-                <button type="button" class="btn-modal-cancel" id="keepReservationBtn">
-                    <i class="bi bi-x-lg"></i>
-                    Keep Reservation
-                </button>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <button type="submit" class="btn-confirm" id="confirmDeleteBtn">
+                        <i class="bi bi-trash"></i>
+                        Yes, Delete Reservation
+                    </button>
+                    <button type="button" class="btn-modal-cancel" id="keepReservationBtn">
+                        <i class="bi bi-x-lg"></i>
+                        Keep Reservation
+                    </button>
+                </div>
             </form>
         </div>
     </div>

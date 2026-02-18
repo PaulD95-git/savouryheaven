@@ -1,194 +1,122 @@
-// Reservation management functionality
-class ReservationManager {
-    constructor() {
-        this.currentReservationId = null;
-        this.deleteForm = document.getElementById('deleteForm');
-        this.confirmBtn = document.getElementById('confirmDeleteBtn');
-        this.modal = document.getElementById('deleteModal');
-        this.closeBtn = document.getElementById('closeModal');
-        this.keepBtn = document.getElementById('keepReservationBtn');
-        this.init();
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded - initializing reservation manager');
+    
+    // Get modal elements
+    const modal = document.getElementById('deleteModal');
+    const closeBtn = document.getElementById('closeModal');
+    const keepBtn = document.getElementById('keepReservationBtn');
+    const modalDate = document.getElementById('modalDate');
+    const modalTime = document.getElementById('modalTime');
+    const deleteForm = document.getElementById('deleteForm');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    
+    // Get all delete buttons
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+    
+    console.log(`Found ${deleteButtons.length} delete buttons`);
+    
+    // Add click event to each delete button
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Delete button clicked');
+            
+            // Get reservation details from data attributes
+            const reservationId = this.getAttribute('data-reservation-id');
+            const reservationDate = this.getAttribute('data-reservation-date');
+            const reservationTime = this.getAttribute('data-reservation-time');
+            
+            console.log('Reservation details:', {reservationId, reservationDate, reservationTime});
+            
+            if (!reservationId) {
+                console.error('No reservation ID found');
+                return;
+            }
+            
+            // Update modal with reservation details
+            if (modalDate) modalDate.textContent = reservationDate;
+            if (modalTime) modalTime.textContent = reservationTime;
+            
+            // Update form action with correct reservation ID
+            if (deleteForm) {
+                deleteForm.action = `/delete-reservation/${reservationId}/`;
+                console.log('Form action set to:', deleteForm.action);
+            }
+            
+            // Show the modal
+            if (modal) {
+                modal.style.display = 'block';
+                // Prevent body from scrolling when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    // Close modal when clicking the close button (X)
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            closeModal(modal);
+        });
     }
-
-    init() {
-        this.bindEvents();
-        this.setupModalHandlers();
-        this.addSpinnerStyles();
+    
+    // Close modal when clicking "Keep Reservation" button
+    if (keepBtn) {
+        keepBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeModal(modal);
+        });
     }
-
-    bindEvents() {
-        // Bind delete buttons using event delegation
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('btn-delete') || e.target.closest('.btn-delete')) {
-                const button = e.target.classList.contains('btn-delete') ? e.target : e.target.closest('.btn-delete');
-                this.showDeleteModal(button);
+    
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal(modal);
+        }
+    });
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
+            closeModal(modal);
+        }
+    });
+    
+    // Function to close modal
+    function closeModal(modal) {
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
+    // Add loading state to confirm delete button
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(e) {
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.disabled = true;
+                confirmDeleteBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Deleting...';
             }
         });
     }
-
-    setupModalHandlers() {
-        // Close modal events
-        if (this.closeBtn) {
-            this.closeBtn.addEventListener('click', () => this.hideDeleteModal());
-        }
-        
-        if (this.keepBtn) {
-            this.keepBtn.addEventListener('click', () => this.hideDeleteModal());
-        }
-
-        // Close modal when clicking outside
-        if (this.modal) {
-            this.modal.addEventListener('click', (e) => {
-                if (e.target === this.modal) {
-                    this.hideDeleteModal();
-                }
-            });
-        }
-
-        // Escape key to close modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal && this.modal.style.display === 'block') {
-                this.hideDeleteModal();
-            }
-        });
-
-        // Form submission
-        if (this.deleteForm) {
-            this.deleteForm.addEventListener('submit', (e) => this.handleFormSubmission(e));
-        }
-    }
-
-    showDeleteModal(button) {
-        console.log('Show modal called with:', button);
-        
-        this.currentReservationId = button.getAttribute('data-reservation-id');
-        const date = button.getAttribute('data-reservation-date');
-        const time = button.getAttribute('data-reservation-time');
-        
-        console.log('Reservation ID:', this.currentReservationId, 'Date:', date, 'Time:', time);
-        
-        if (!this.currentReservationId) {
-            console.error('No reservation ID found on button');
-            return;
-        }
-        
-        // Set modal content
-        document.getElementById('modalDate').textContent = date;
-        document.getElementById('modalTime').textContent = time;
-        
-        // Show modal
-        this.modal.style.display = 'block';
-        
-        // Reset confirm button state
-        this.resetConfirmButton();
-    }
-
-    hideDeleteModal() {
-        console.log('Hide modal called');
-        if (this.modal) {
-            this.modal.style.display = 'none';
-        }
-        this.currentReservationId = null;
-        this.resetConfirmButton();
-    }
-
-    handleFormSubmission(e) {
-        e.preventDefault();
-        
-        console.log('Form submission, current ID:', this.currentReservationId);
-        
-        if (!this.currentReservationId) {
-            console.error('No reservation ID selected for deletion');
-            alert('No reservation selected. Please try again.');
-            return;
-        }
-
-        // Show loading state
-        this.setLoadingState();
-
-        // Submit the deletion via fetch
-        this.submitDeletion();
-    }
-
-    setLoadingState() {
-        if (this.confirmBtn) {
-            this.confirmBtn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Deleting...';
-            this.confirmBtn.disabled = true;
-        }
-        
-        // Disable keep button too
-        if (this.keepBtn) {
-            this.keepBtn.disabled = true;
-        }
-    }
-
-    resetConfirmButton() {
-        if (this.confirmBtn) {
-            this.confirmBtn.innerHTML = '<i class="bi bi-trash"></i> Yes, Delete Reservation';
-            this.confirmBtn.disabled = false;
-        }
-        
-        // Re-enable keep button
-        if (this.keepBtn) {
-            this.keepBtn.disabled = false;
-        }
-    }
-
-    submitDeletion() {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        const url = `/delete-reservation/${this.currentReservationId}/`;
-        
-        console.log('Submitting deletion to:', url);
-        
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            if (response.ok) {
-                // Remove the card from DOM immediately for better UX
-                const card = document.getElementById(`reservation-${this.currentReservationId}`);
-                if (card) {
-                    card.style.transition = 'opacity 0.3s, transform 0.3s';
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        card.remove();
-                        // Check if there are no more reservations
-                        const remainingCards = document.querySelectorAll('.reservation-card');
-                        if (remainingCards.length === 0) {
-                            // Reload to show empty state
-                            window.location.reload();
-                        }
-                    }, 300);
-                }
-                // Hide modal
-                this.hideDeleteModal();
-            } else {
-                throw new Error(`Deletion failed with status: ${response.status}`);
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting reservation:', error);
-            this.showError('Failed to delete reservation. Please try again.');
-            this.resetConfirmButton();
-        });
-    }
-
-    showError(message) {
-        alert(message);
-    }
-
-    addSpinnerStyles() {
+    
+    // Add CSS for loading spinner if not present
+    addSpinnerStyles();
+    
+    function addSpinnerStyles() {
         if (!document.getElementById('reservation-spinner-styles')) {
             const style = document.createElement('style');
             style.id = 'reservation-spinner-styles';
             style.textContent = `
-                .spin {
+                .btn-confirm:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    position: relative;
+                }
+                
+                .btn-confirm:disabled i {
                     animation: spin 1s linear infinite;
                     display: inline-block;
                 }
@@ -198,30 +126,40 @@ class ReservationManager {
                     100% { transform: rotate(360deg); }
                 }
                 
-                .modal-actions .btn-confirm:disabled,
-                .modal-actions .btn-modal-cancel:disabled {
-                    opacity: 0.6;
-                    cursor: not-allowed;
-                    transform: none !important;
-                }
-                
                 .modal {
                     display: none;
+                }
+                
+                .modal.show {
+                    display: block;
                 }
             `;
             document.head.appendChild(style);
         }
     }
-}
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing ReservationManager...');
-    new ReservationManager();
     
-    // Add smooth animations for page elements
+    // Add animation delays to cards
     const cards = document.querySelectorAll('.reservation-card');
     cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
     });
+    
+    // Add fadeInUp animation if not present
+    if (!document.getElementById('fadeInUp-animation')) {
+        const style = document.createElement('style');
+        style.id = 'fadeInUp-animation';
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 });
