@@ -180,12 +180,11 @@ USE_TZ = True
 # STATIC FILES
 # -------------------------------------------------------------------
 
+# STATIC FILES
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Use basic StaticFilesStorage to avoid Cloudinary compression issues
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY FIELD TYPE
@@ -245,3 +244,4 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+django_heroku.settings(locals(), staticfiles=False)
