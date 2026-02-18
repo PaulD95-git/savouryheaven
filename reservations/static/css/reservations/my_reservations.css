@@ -118,6 +118,7 @@
 }
 
 .reservation-card::before {
+    pointer-events: none; /* Prevents overlay blocking button clicks */
     content: '';
     position: absolute;
     top: 0;
