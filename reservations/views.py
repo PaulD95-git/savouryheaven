@@ -10,6 +10,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db import models
 from django.views.generic import TemplateView
+import time
 
 
 import logging
@@ -255,7 +256,8 @@ def my_reservations(request):
     ).order_by('-date', 'time_slot__start_time')
 
     return render(request, 'reservations/my_reservations.html', {
-        'reservations': reservations
+        'reservations': reservations,
+        'timestamp': int(time.time())
     })
 
 

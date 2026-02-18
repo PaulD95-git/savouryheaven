@@ -151,7 +151,17 @@
     </div>
 </div>
 
+
+<!-- Debug information -->
+<script>
+    console.log('🔍 Template loaded, checking for JavaScript file...');
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 Page DOM loaded');
+        console.log('🔘 Delete buttons on page:', document.querySelectorAll('.btn-delete').length);
+    });
+</script>
+
 <!-- Load JavaScript -->
-<script src="{% static 'js/reservations/my_reservations.js' %}?v=4"></script>
+<script src="{% static 'js/reservations/my_reservations.js' %}?v={{ timestamp }}"></script>
 
 {% endblock %}

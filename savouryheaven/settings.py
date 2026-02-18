@@ -25,6 +25,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+SECRET_KEY = 'django-insecure-your-local-dev-key-here-12345'
+
 # Hosts allowed to serve the project
 ALLOWED_HOSTS = [
     'savouryheaven-15fa27504aa2.herokuapp.com', 
@@ -135,6 +137,8 @@ DATABASES = {
         ssl_require=not DEBUG
     )
 }
+
+
 
 # -------------------------------------------------------------------
 # PASSWORD VALIDATION
