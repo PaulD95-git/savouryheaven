@@ -1,0 +1,854 @@
+/* ============================================= */
+/* Root Variables */
+/* ============================================= */
+:root {
+    --gold: #d4af37;
+    --burgundy: #4b1e2f;
+    --burgundy-light: #633244;
+    --cream: #fef6e4;
+}
+
+/* ============================================= */
+/* Font Imports */
+/* ============================================= */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600&display=swap');
+
+/* ============================================= */
+/* Base Body Styles */
+/* ============================================= */
+body {
+    font-family: 'Cormorant Garamond', serif;
+    background: linear-gradient(180deg, 
+        #4b1e2f 0%,                           
+        #4b1e2f 40%,                          
+        #633244 70%,                          
+        #7a4355 100%                          
+    );
+    min-height: 100vh;
+    color: var(--cream);
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* ============================================= */
+/* Navigation Bar */
+/* ============================================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    padding: 1.5rem 1rem;
+    background: transparent;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), 
+                0 1px 8px rgba(212, 175, 55, 0.3),
+                0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.navbar.scrolled {
+    padding: 0.75rem 1rem;
+    background: rgba(75, 30, 47, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar .container {
+    max-width: 1400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 15px;
+    position: relative;
+}
+
+.navbar-nav-left {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-100%);
+    margin-left: -200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.navbar-nav-left .navbar-nav {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 2rem;
+}
+
+.navbar-nav-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.navbar-nav-right {
+    position: absolute;
+    left: 50%;
+    margin-left: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.navbar-nav-right .navbar-nav {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 2rem;
+}
+
+/* ============================================= */
+/* Brand/Logo Styles */
+/* ============================================= */
+.navbar-brand {
+    z-index: 1000;
+}
+
+.navbar-brand img {
+    height: 180px;
+    max-width: 280px;
+    object-fit: contain;
+    aspect-ratio: 3 / 2;
+    transition: all 0.4s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.navbar.scrolled .navbar-brand img {
+    height: 95px;
+    max-width: 180px;
+}
+
+/* ============================================= */
+/* Navigation Links */
+/* ============================================= */
+.nav-link {
+    color: var(--gold) !important;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    position: relative;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-decoration: underline;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--cream);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--cream) !important;
+    transform: translateY(-2px);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ============================================= */
+/* Auth Buttons - Responsive Positioning */
+/* ============================================= */
+.auth-buttons {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    white-space: nowrap;
+    transition: all 0.4s ease;
+    z-index: 1001;
+}
+
+.btn-auth {
+    background: linear-gradient(135deg, var(--gold), #e6c547);
+    color: var(--burgundy);
+    border: 2px solid transparent;
+    padding: 0.6rem 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn-auth::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-auth:hover::before {
+    left: 100%;
+}
+
+.btn-auth:hover {
+    color: var(--burgundy);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    border-color: var(--cream);
+}
+
+.btn-auth-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+}
+
+.btn-auth-outline:hover {
+    background: var(--gold);
+    color: var(--burgundy);
+}
+
+/* ============================================= */
+/* Food Burger Menu */
+/* ============================================= */
+.navbar-toggler {
+    border: none;
+    padding: 1rem;
+    background: rgba(212, 175, 55, 0.15);
+    border-radius: 15px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: fixed;
+    right: 1.5rem;
+    top: 2rem;
+    z-index: 1001;
+    overflow: hidden;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    display: none;
+    width: 60px;
+    height: 60px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.4),
+                0 8px 25px rgba(212, 175, 55, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    outline: none;
+}
+
+.navbar-toggler:hover {
+    background: rgba(212, 175, 55, 0.25);
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.35),
+                inset 0 2px 0 rgba(255, 255, 255, 0.25);
+}
+
+.food-burger-icon {
+    position: relative;
+    width: 32px;
+    height: 24px;
+    margin: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.food-burger-icon .bun-top,
+.food-burger-icon .patty,
+.food-burger-icon .bun-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 4px;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.food-burger-icon .bun-top {
+    top: 0;
+    background: linear-gradient(90deg, var(--gold), #f4d03f);
+    transform-origin: center;
+}
+
+.food-burger-icon .patty {
+    top: 10px;
+    background: linear-gradient(90deg, #8B4513, #A0522D);
+    transform-origin: center;
+}
+
+.food-burger-icon .bun-bottom {
+    top: 20px;
+    background: linear-gradient(90deg, var(--gold), #f4d03f);
+    transform-origin: center;
+}
+
+/* Animated burger transformations when expanded */
+.navbar-toggler[aria-expanded="true"] .food-burger-icon .bun-top {
+    transform: translateY(2px) rotate(5deg) scale(1.1);
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+    animation: topBunBounce 0.6s ease-out;
+}
+
+.navbar-toggler[aria-expanded="true"] .food-burger-icon .patty {
+    transform: scale(1.15) translateY(-1px);
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+    animation: pattyPulse 0.8s ease-in-out infinite alternate;
+}
+
+.navbar-toggler[aria-expanded="true"] .food-burger-icon .bun-bottom {
+    transform: translateY(-2px) rotate(-5deg) scale(1.1);
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+    animation: bottomBunBounce 0.6s ease-out;
+}
+
+/* Keyframe animations for burger parts */
+@keyframes topBunBounce {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateY(-3px) rotate(8deg) scale(1.2); }
+    100% { transform: translateY(2px) rotate(5deg) scale(1.1); }
+}
+
+@keyframes bottomBunBounce {
+    0% { transform: translateY(0) rotate(0deg) scale(1); }
+    50% { transform: translateY(3px) rotate(-8deg) scale(1.2); }
+    100% { transform: translateY(-2px) rotate(-5deg) scale(1.1); }
+}
+
+@keyframes pattyPulse {
+    0% { transform: scale(1.15) translateY(-1px); }
+    100% { transform: scale(1.25) translateY(-2px); }
+}
+
+/* Eyes (pseudo-elements) */
+.food-burger-icon::before,
+.food-burger-icon::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--cream);
+    border-radius: 50%;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    opacity: 0;
+    box-shadow: 0 0 6px rgba(254, 246, 228, 0.8);
+    z-index: 10;
+}
+
+.food-burger-icon::before {
+    top: -2px;
+    left: 6px;
+}
+
+.food-burger-icon::after {
+    top: -2px;
+    right: 6px;
+}
+
+/* Eyes pop out with dramatic animation when burger is expanded */
+.navbar-toggler[aria-expanded="true"] .food-burger-icon::before {
+    opacity: 1;
+    transform: translateX(-12px) translateY(-8px) scale(2);
+    background: radial-gradient(circle, #ff6b6b, #e74c3c);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.8), 
+                0 0 30px rgba(255, 107, 107, 0.4);
+    animation: eyePopLeft 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.navbar-toggler[aria-expanded="true"] .food-burger-icon::after {
+    opacity: 1;
+    transform: translateX(12px) translateY(-8px) scale(2);
+    background: radial-gradient(circle, #ff6b6b, #e74c3c);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.8), 
+                0 0 30px rgba(255, 107, 107, 0.4);
+    animation: eyePopRight 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Eye popping animations */
+@keyframes eyePopLeft {
+    0% { 
+        transform: translateX(0) translateY(0) scale(1);
+        opacity: 0;
+    }
+    30% { 
+        transform: translateX(-4px) translateY(-2px) scale(1.3);
+        opacity: 0.7;
+    }
+    60% { 
+        transform: translateX(-15px) translateY(-10px) scale(2.3);
+        opacity: 1;
+    }
+    100% { 
+        transform: translateX(-12px) translateY(-8px) scale(2);
+        opacity: 1;
+    }
+}
+
+@keyframes eyePopRight {
+    0% { 
+        transform: translateX(0) translateY(0) scale(1);
+        opacity: 0;
+    }
+    30% { 
+        transform: translateX(4px) translateY(-2px) scale(1.3);
+        opacity: 0.7;
+    }
+    60% { 
+        transform: translateX(15px) translateY(-10px) scale(2.3);
+        opacity: 1;
+    }
+    100% { 
+        transform: translateX(12px) translateY(-8px) scale(2);
+        opacity: 1;
+    }
+}
+
+/* Hover effects with enhanced animation */
+.navbar-toggler:hover .food-burger-icon {
+    transform: scale(1.1) rotate(2deg);
+    animation: burgerWiggle 0.6s ease-in-out;
+}
+
+.navbar-toggler:hover .food-burger-icon::before,
+.navbar-toggler:hover .food-burger-icon::after {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.2);
+    animation: eyeBlink 1s ease-in-out infinite alternate;
+}
+
+/* Additional animations */
+@keyframes burgerWiggle {
+    0%, 100% { transform: scale(1.1) rotate(2deg); }
+    25% { transform: scale(1.15) rotate(-1deg); }
+    75% { transform: scale(1.05) rotate(3deg); }
+}
+
+@keyframes eyeBlink {
+    0% { opacity: 1; transform: translateY(-2px) scale(1.2); }
+    50% { opacity: 0.7; transform: translateY(-3px) scale(1.1); }
+    100% { opacity: 1; transform: translateY(-2px) scale(1.2); }
+}
+
+/* ============================================= */
+/* Offcanvas Mobile Menu
+/* ============================================= */
+.offcanvas-start {
+    background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
+    color: var(--gold);
+    border-right: 4px solid var(--gold);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+    /* Limit width to show burger animation */
+    width: 75% !important;
+    max-width: 320px !important;
+}
+
+/* Custom backdrop that doesn't cover the burger area */
+.offcanvas-backdrop {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    /* Create a gradient that's transparent on the right side where burger is */
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.5) 0%, 
+        rgba(0, 0, 0, 0.5) 60%, 
+        rgba(0, 0, 0, 0.2) 80%, 
+        transparent 100%) !important;
+}
+
+/* Ensure burger area remains interactive */
+.navbar-toggler {
+    z-index: 1055 !important; /* Higher than offcanvas z-index */
+    pointer-events: auto !important;
+}
+
+.offcanvas-header {
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    padding: 2rem 1.5rem;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.offcanvas-title {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.btn-close-white:hover {
+    transform: rotate(90deg) scale(1.2);
+    opacity: 1;
+}
+
+.offcanvas-body {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mobile-nav {
+    flex: 1;
+}
+
+.offcanvas .nav-link {
+    color: var(--gold) !important;
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 18px 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.4s ease;
+    margin: 0;
+    font-style: normal;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.offcanvas .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.offcanvas .nav-link:hover::before {
+    left: 100%;
+}
+
+.offcanvas .nav-link:hover {
+    color: var(--cream) !important;
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateX(10px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.mobile-auth-buttons {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-auth-buttons .btn-auth {
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 30px;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .offcanvas-start {
+        width: 80% !important;
+        max-width: 280px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .offcanvas-start {
+        width: 85% !important;
+        max-width: 260px !important;
+    }
+    
+    .offcanvas-title {
+        font-size: 1.4rem;
+    }
+    
+    .offcanvas .nav-link {
+        font-size: 1.2rem;
+        padding: 15px 16px;
+    }
+}
+
+/* ============================================= */
+/* Footer Styles */
+/* ============================================= */
+footer {
+    background: linear-gradient(135deg, var(--burgundy), var(--burgundy-light));
+    color: var(--gold);
+    border-top: 3px solid var(--gold);
+    padding: 3rem 0 2rem;
+}
+
+footer h3 {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    font-family: 'Playfair Display', serif;
+}
+
+footer h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+}
+
+footer a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+}
+
+footer a:hover {
+    color: var(--cream);
+    transform: translateY(-2px) scale(1.1);
+}
+
+footer p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+footer address {
+    font-style: normal;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ============================================= */
+/* Main Content Area */
+/* ============================================= */
+main {
+    padding-top: 200px;
+    position: relative;
+    z-index: 1;
+    min-height: 60vh;
+}
+
+/* ============================================= */
+/* Custom 1400px Breakpoint for Burger Menu */
+/* ============================================= */
+
+/* Remove Bootstrap's default navbar collapse behavior */
+.navbar-expand-lg .navbar-toggler {
+    display: none;
+}
+
+.navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+}
+
+/* Show burger menu and hide desktop nav below 1400px */
+@media (max-width: 1100px) {
+    /* Burger menu styles */
+    .navbar-toggler {
+        display: block;
+        padding: 0.8rem;
+        top: 1.8rem;
+        width: 55px;
+        height: 55px;
+    }
+    
+    .navbar.scrolled .navbar-toggler {
+        top: 1.2rem;
+    }
+    
+    .food-burger-icon {
+        width: 28px;
+        height: 22px;
+    }
+    
+    /* Hide desktop nav items */
+    .navbar-nav-left,
+    .navbar-nav-right {
+        display: none !important;
+    }
+    
+    /* Adjust logo size */
+    .navbar-brand img {
+        height: 140px;
+        max-width: 210px;
+    }
+    
+    /* Hide auth buttons */
+    .auth-buttons {
+        display: none !important;
+    }
+    
+    /* Main content adjustment */
+    main {
+        padding-top: 160px;
+    }
+    
+    /* Footer adjustments */
+    footer h3 {
+        font-size: 1.2rem;
+    }
+    
+    footer p, footer address {
+        font-size: 1rem;
+    }
+
+    /* Offcanvas adjustments */
+    .offcanvas-start {
+        width: 300px;
+    }
+}
+
+/* Ensure desktop nav is visible above 1400px */
+@media (min-width: 1400px) {
+    /* Show desktop nav items */
+    .navbar-nav-left,
+    .navbar-nav-right {
+        display: flex !important;
+    }
+    
+    /* Hide burger menu */
+    .navbar-toggler {
+        display: none !important;
+    }
+    
+    /* Show auth buttons */
+    .auth-buttons {
+        display: flex !important;
+    }
+}
+
+/* ============================================= */
+/* Additional Responsive Breakpoints */
+/* ============================================= */
+
+@media (max-width: 1750px) {
+    .navbar-nav-left .navbar-nav,
+    .navbar-nav-right .navbar-nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .navbar-nav-left {
+        transform: translateX(-120%);
+        margin-left: -150px;
+    }
+    
+    .navbar-nav-right {
+        margin-left: 120px;
+    }
+    
+    .nav-link {
+        font-size: 1.5rem;
+        padding: 0.5rem 0;
+    }
+    
+    .auth-buttons {
+        right: 1.5rem;
+        top: 0.5rem;
+        transform: none;
+        gap: 0.5rem;
+        flex-direction: column;
+        background: rgba(75, 30, 47, 0.95);
+        backdrop-filter: blur(15px);
+        padding: 0.8rem;
+        border-radius: 20px;
+        border: 2px solid var(--gold);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-auth {
+        font-size: 0.85rem;
+        padding: 0.45rem 1.1rem;
+        letter-spacing: 0.2px;
+        border-radius: 15px;
+        width: 100%;
+        text-align: center;
+        min-width: 80px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .navbar .container {
+        max-width: 1600px;
+    }
+}
+
+/* Small Mobile Phones (576px and below) */
+@media (max-width: 576px) {
+    main {
+        padding-top: 140px;
+    }
+
+    .offcanvas-start {
+        width: 280px;
+    }
+    
+    .navbar-brand img {
+        height: 120px;
+        max-width: 180px;
+    }
+    
+    .navbar.scrolled .navbar-brand img {
+        height: 60px;
+        max-width: 120px;
+    }
+
+    .navbar-toggler {
+        width: 50px;
+        height: 50px;
+        top: 2rem;
+        right: 1rem;
+        padding: 0.7rem;
+    }
+
+    .food-burger-icon {
+        width: 24px;
+        height: 20px;
+    }
+}

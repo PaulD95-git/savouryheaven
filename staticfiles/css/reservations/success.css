@@ -1,0 +1,274 @@
+/* ============================================= */
+/* Success Hero Section - Main header area */
+/* ============================================= */
+.success-hero {
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cream);
+    text-align: center;
+    position: relative;
+    padding-top: 200px;
+    bottom: 80px;
+}
+
+/* Content container within hero section with higher z-index */
+.success-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Main heading style in hero section */
+.success-hero h1 {
+    color: var(--gold);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 3.5rem;
+    margin-bottom: 0;
+}
+
+/* Subheading/lead text style in hero section */
+.success-hero .lead {
+    color: var(--cream);
+    font-size: 1.3rem;
+}
+
+/* ============================================= */
+/* Main Success Container - Central content area */
+/* ============================================= */
+.success-container {
+    max-width: 700px;
+    margin: 40px auto 0;
+    position: relative;
+    z-index: 3;
+    padding: 0 20px;
+}
+
+/* Primary card styling for success content */
+.success-card {
+    background: var(--burgundy);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 50px 40px;
+    border: 2px solid var(--gold);
+    text-align: center;
+}
+
+/* Success icon styling with animation */
+.success-icon {
+    font-size: 80px;
+    color: #28a745;
+    margin-bottom: 25px;
+    text-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    display: block;
+    animation: checkmarkPulse 1.5s ease-out;
+}
+
+/* Animation for success icon (pulse effect) */
+@keyframes checkmarkPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Success title styling */
+.success-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Success subtitle styling */
+.success-subtitle {
+    color: var(--cream);
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+/* ============================================= */
+/* Booking Details Section */
+/* ============================================= */
+.booking-details {
+    background: rgba(99, 50, 68, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 1px solid var(--gold);
+    text-align: left;
+}
+
+/* Booking details heading */
+.booking-details h5 {
+    color: var(--gold);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Individual detail row layout */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    margin-bottom: 10px;
+}
+
+/* Remove border from last detail row */
+.detail-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Label styling in detail rows */
+.detail-label {
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 1.1rem;
+}
+
+/* Value styling in detail rows */
+.detail-value {
+    color: var(--cream);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Special requests section styling */
+.special-requests {
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    border-left: 4px solid var(--gold);
+}
+
+/* Special requests label styling */
+.special-requests .detail-label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Special requests value styling */
+.special-requests .detail-value {
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ============================================= */
+/* Call-to-Action Button */
+/* ============================================= */
+.home-btn {
+    background: linear-gradient(135deg, var(--gold), #e6c558);
+    border: none;
+    color: var(--burgundy);
+    padding: 15px 40px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 30px;
+}
+
+/* Button hover effect (shine animation) */
+.home-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.home-btn:hover::before {
+    left: 100%;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, #e6c558, var(--gold));
+    color: var(--burgundy);
+    text-decoration: none;
+}
+
+/* ============================================= */
+/* Animations */
+/* ============================================= */
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================= */
+/* Responsive Styles for Mobile Devices */
+/* ============================================= */
+@media (max-width: 768px) {
+    .success-hero {
+        height: 30vh;
+        bottom: 60px;
+    }
+
+    .success-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .success-card {
+        padding: 30px 25px;
+        margin-top: -40px;
+    }
+
+    .success-icon {
+        font-size: 60px;
+    }
+
+    .success-title {
+        font-size: 2rem;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .booking-details {
+        padding: 20px;
+    }
+}
